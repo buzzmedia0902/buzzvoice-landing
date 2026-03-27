@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buzz Voice - è©±ãã ãã§ããã­ã¹ãã«ãªãã</title>
+<meta name="description" content="Buzz Voiceã¯ãAIãé³å£°ããªã¢ã«ã¿ã¤ã ã§é«ç²¾åº¦ã«ãã­ã¹ãåããæ¬¡ä¸ä»£ã®é³å£°å¥åãµã¼ãã¹ã§ãã">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #faf8f4;
+  --bg-warm: #fdf6ee;
+  --bg-section: #f7f3ed;
+  --text-primary: #1a1a19;
+  --text-secondary: #6b6960;
+  --text-muted: #9c9889;
+  --accent: #f5a623;
+  --accent-dark: #e8941a;
+  --accent-light: #ffedc2;
+  --accent-orange: #ef7b2e;
+  --blue-light: #e8f4fd;
+  --blue-icon: #5bb8f5;
+  --white: #ffffff;
+  --border: rgba(0,0,0,0.07);
+  --radius: 16px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ========== Header ========== */
+.header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 0 48px; height: 68px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(250,248,244,0.88);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: box-shadow .3s;
+}
+.header.scrolled { box-shadow: 0 2px 24px rgba(0,0,0,0.06); }
+.header-left { display: flex; align-items: center; gap: 10px; }
+.logo-bee { width: 36px; height: 36px; }
+.logo-text { font-size: 20px; font-weight: 800; color: var(--text-primary); letter-spacing: -0.5px; }
+.logo-waves { display: flex; align-items: center; gap: 2px; margin-left: 4px; }
+.logo-waves span { display: block; width: 3px; border-radius: 2px; background: var(--accent-orange); }
+.logo-waves span:nth-child(1) { height: 8px; }
+.logo-waves span:nth-child(2) { height: 14px; }
+.logo-waves span:nth-child(3) { height: 8px; }
+.header-nav { display: flex; align-items: center; gap: 36px; }
+.header-nav a { text-decoration: none; font-size: 15px; font-weight: 500; color: var(--text-secondary); transition: color .2s; }
+.header-nav a:hover { color: var(--text-primary); }
+.header-right { display: flex; align-items: center; gap: 16px; }
+.btn-login {
+  font-size: 14px; font-weight: 600; color: var(--text-primary); text-decoration: none;
+  padding: 8px 20px; border: 1.5px solid var(--border); border-radius: var(--radius-xs);
+  transition: all .2s;
+}
+.btn-login:hover { border-color: rgba(0,0,0,0.2); background: rgba(0,0,0,0.02); }
+.btn-cta {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 20px; background: var(--accent-orange); color: #fff; border: none;
+  border-radius: var(--radius-xs); font-size: 14px; font-weight: 600;
+  text-decoration: none; cursor: pointer; transition: all .2s;
+  box-shadow: 0 2px 10px rgba(239,123,46,0.3);
+}
+.btn-cta:hover { background: #e06d1f; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(239,123,46,0.4); }
+
+/* ========== Hero ========== */
+.hero {
+  padding: 140px 48px 80px; max-width: 1240px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+  min-height: 100vh; position: relative;
+}
+.hero::before {
+  content: ''; position: absolute; top: 64px; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(180deg, var(--bg-warm) 0%, var(--bg) 60%);
+  z-index: -1;
+}
+.hero-content { max-width: 560px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 16px; background: var(--accent-light); bordW"×&FW3¢#G°¢föçB×6¦S¢'²föçB×vVvC¢s²6öÆ÷#¢f"ÒÖ66VçBÖF&²°¢ÆWGFW"×76æs¢ã'²FWB×G&ç6f÷&Ó¢WW&66S²Ö&vâÖ&÷GFöÓ¢#°§Ð¢æW&òÖ&FvR7fr²vGF¢G²VvC¢G²Ð¢æW&ò×FFÆR°¢föçB×6¦S¢SG²föçB×vVvC¢²ÆæRÖVvC¢ãS²ÆWGFW"×76æs¢Ó'°¢6öÆ÷#¢f"Ò×FWB×&Ö'²Ö&vâÖ&÷GFöÓ¢°§Ð¢æW&ò×VæFW&ÆæR°¢VvC¢G²vGF¢##²&÷&FW"×&FW3¢'²Ö&vâÖ&÷GFöÓ¢#G°¢&6¶w&÷VæC¢ÆæV"Öw&FVçBFVrÂf"ÒÖ66VçBRÂf"ÒÖ66VçBÖ÷&ævRSRÂG&ç7&VçBR°§Ð¢æW&òÖFW62°¢föçB×6¦S¢g²ÆæRÖVvC¢ã²6öÆ÷#¢f"Ò×FWB×6V6öæF'°¢Ö&vâÖ&÷GFöÓ¢3g²Ö×vGF¢Cc°§Ð¢æW&òÖ7Föç2²F7Æ¢fÆW²ÆvâÖFV×3¢6VçFW#²v¢g²Ö&vâÖ&÷GFöÓ¢Sg²Ð¢æ'Fâ×&Ö'°¢F7Æ¢æÆæRÖfÆW²ÆvâÖFV×3¢6VçFW#²v¢°¢FFæs¢W3²&6¶w&÷VæC¢f"ÒÖ66VçBÖ÷&ævR²6öÆ÷#¢6ffc²&÷&FW#¢æöæS°¢&÷&FW"×&FW3¢f"Ò×&FW2×6Ò²föçB×6¦S¢g²föçB×vVvC¢s°¢FWBÖFV6÷&Föã¢æöæS²7W'6÷#¢öçFW#²G&ç6Föã¢ÆÂã#W3°¢&÷×6F÷s¢G&v&#3Ã#2ÃCbÃã3R°§Ð¢æ'Fâ×&Ö'¦÷fW"²&6¶w&÷VæC¢6SfCc²G&ç6f÷&Ó¢G&ç6ÆFUÓ'²&÷×6F÷s¢#&v&#3Ã#2ÃCbÃãB²Ð¢æ'Fâ×&Ö'æ'&÷r²föçB×6¦S¢²G&ç6Föã¢G&ç6f÷&Òã'3²Ð¢æ'Fâ×&Ö'¦÷fW"æ'&÷r²G&ç6f÷&Ó¢G&ç6ÆFU7²Ð¢æ'Fâ×6V6öæF'°¢F7Æ¢æÆæRÖfÆW²ÆvâÖFV×3¢6VçFW#²FFæs¢W#G°¢&6¶w&÷VæC¢G&ç7&VçC²6öÆ÷#¢f"Ò×FWB×&Ö'°¢föçB×6¦S¢g²föçB×vVvC¢c²FWBÖFV6÷&Föã¢æöæS²7W'6÷#¢öçFW#²G&ç6Föã¢6öÆ÷"ã'3°§Ð¢æ'Fâ×6V6öæF'¦÷fW"²6öÆ÷#¢f"ÒÖ66VçBÖF&²²Ð¢æW&ò×7FG2²F7Æ¢fÆW²v¢C²Ð¢ç7FBÖFVÒ²F7Æ¢fÆW²fÆWÖF&V7Föã¢6öÇVÖã²Ð¢ç7FB×fÇVR²föçB×6¦S¢3'²föçB×vVvC¢²6öÆ÷#¢f"Ò×FWB×&Ö'²ÆWGFW"×76æs¢ÓãW²Ð¢ç7FBÖÆ&VÂ²föçB×6¦S¢7²6öÆ÷#¢f"Ò×FWBÖ×WFVB²föçB×vVvC¢S²Ð ¢ò¢W&òf7VÂ¢ð¢æW&ò×f7VÂ²÷6Föã¢&VÆFfS²F7Æ¢fÆW²ÆvâÖFV×3¢6VçFW#²§W7FgÖ6öçFVçC¢6VçFW#²Ð¢æW&òÖÆÇW7G&Föâ²÷6Föã¢&VÆFfS²vGF¢S²Ö×vGF¢S#²Ð¢æÖ66÷BÖ6öçFæW"²÷6Föã¢&VÆFfS²¢ÖæFW¢#²FWBÖÆvã¢6VçFW#²Ð¢æÖ66÷B×7fr²vGF¢3²VvC¢3²fÇFW#¢G&÷×6F÷rgC&v&ÃÃÃã²Ð¢æVFòÖ&'2°¢÷6Föã¢'6öÇWFS²F÷¢SS²ÆVgC¢SS²G&ç6f÷&Ó¢G&ç6ÆFRÓSRÂÓSR²¢ÖæFW¢°¢F7Æ¢fÆW²ÆvâÖFV×3¢6VçFW#²v¢g²VvC¢#°§Ð¢æVFòÖ&'27â°¢F7Æ¢&Æö6³²vGF¢G²&÷&FW"×&FW3¢7°¢&6¶w&÷VæC¢ÆæV"Öw&FVçBFVrÂ&v&ÃBÃ#CRÃã2RÂ&v&ÃBÃ#CRÃãR°¢æÖFöã¢VFô&"ãW2V6RÖâÖ÷WBæfæFS°§Ð¢æVFòÖ&'27ã¦çFÖ6ÆB²VvC¢C²æÖFöâÖFVÆ¢3²Ð¢æVFòÖ&'27ã¦çFÖ6ÆB"²VvC¢s²æÖFöâÖFVÆ¢ãW3²Ð¢æVFòÖ&'27ã¦çFÖ6ÆB2²VvC¢²æÖFöâÖFVÆ¢ã73²Ð¢æVFòÖ&'27ã¦çFÖ6ÆBB²VvC¢C²æÖFöâÖFVÆ¢ã3²Ð¢æVFòÖ&'27ã¦çFÖ6ÆBR²VvC¢²æÖFöâÖFVÆ¢ã#W3²Ð¢æVFòÖ&'27ã¦çFÖ6ÆBb²VvC¢C²æÖFöâÖFVÆ¢ãW3²Ð¢æVFòÖ&'27ã¦çFÖ6ÆBr²VvC¢²æÖFöâÖFVÆ¢ã'3²Ð¢æVFòÖ&'27ã¦çFÖ6ÆB²VvC¢s²æÖFöâÖFVÆ¢ã3W3²Ð¢æVFòÖ&'27ã¦çFÖ6ÆB²VvC¢C²æÖFöâÖFVÆ¢ã3²Ð¤¶Wg&ÖW2VFô&"°¢RÂR²G&ç6f÷&Ó¢66ÆUãb²÷6G¢ãS²Ð¢SR²G&ç6f÷&Ó¢66ÆU²÷6G¢²Ð§Ð ¢ò¢&WfWr&"¢ð¢æ×&WfWr°¢÷6Föã¢'6öÇWFS²&÷GFöÓ¢²ÆVgC¢SS²G&ç6f÷&Ó¢G&ç6ÆFUÓSR²¢ÖæFW¢3°¢&6¶w&÷VæC¢&v&#bÃ#bÃ#RÃã"²&6¶G&÷ÖfÇFW#¢&ÇW"#°¢&÷&FW"×&FW3¢G²FFæs¢#°¢F7Æ¢fÆW²ÆvâÖFV×3¢6VçFW#²v¢'²vFR×76S¢æ÷w&°¢&÷×6F÷s¢3'&v&ÃÃÃã#R²&÷&FW#¢6öÆB&v&#SRÃ#SRÃ#SRÃã°§Ð¢æ×&WfWrÖF÷B²vGF¢²VvC¢²&6¶w&÷VæC¢33F3sS²&÷&FW"×&FW3¢SS²fÆW×6&æ³¢²Ð¢æ×&WfWr×FWB²föçB×6¦S¢7²6öÆ÷#¢&v&#SRÃ#SRÃ#SRÃã²föçB×vVvC¢S²Ð¢æ×&WfWr×FWt strong { color: var(--accent-orange); }
+.app-preview-waves { display: flex; align-items: center; gap: 2px; margin: 0 4px; }
+.app-preview-waves span { display: block; width: 2.5px; border-radius: 2px; background: var(--accent-orange); }
+.app-preview-waves span:nth-child(1) { height: 6px; }
+.app-preview-waves span:nth-child(2) { height: 12px; }
+.app-preview-waves span:nth-child(3) { height: 8px; }
+.app-preview-time { font-size: 12px; color: rgba(255,255,255,0.5); margin: 0 4px; }
+.app-preview-rec { width: 20px; height: 20px; background: #ff3b30; border-radius: 50%; flex-shrink: 0; }
+
+/* ========== Section common ========== */
+.section { padding: 100px 48px; max-width: 1240px; margin: 0 auto; }
+.section-center { text-align: center; }
+.section-label {
+  display: inline-block; font-size: 13px; font-weight: 700; color: var(--accent-dark);
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px;
+}
+.section-title { font-size: 40px; font-weight: 900; letter-spacing: -1.5px; line-height: 1.25; margin-bottom: 16px; }
+.section-desc { font-size: 16px; color: var(--text-secondary); line-height: 1.8; max-width: 600px; margin-bottom: 56px; }
+.section-center .section-desc { margin-left: auto; margin-right: auto; }
+
+/* ========== Features cards ========== */
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.feature-card {
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 36px 28px; transition: all .3s;
+}
+.feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.06); }
+.feature-icon {
+  width: 48px; height: 48px; background: var(--blue-light); border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 20px;
+}
+.feature-icon svg { width: 24px; height: 24px; color: var(--blue-icon); }
+.feature-title { font-size: 18px; font-weight: 700; margin-bottom: 12px; }
+.feature-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.8; }
+
+/* ========== Features detail ========== */
+.features-detail { padding: 40px 48px 100px; max-width: 1240px; margin: 0 auto; }
+.features-detail .section-subtitle { font-size: 24px; font-weight: 600; color: var(--text-muted); margin-bottom: 56px; }
+.feature-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-bottom: 80px;
+}
+.feature-row.reverse { direction: rtl; }
+.feature-row.reverse > * { direction: ltr; }
+.feature-img {
+  width: 100%; border-radius: var(--radius); overflow: hidden;
+  background: linear-gradient(135deg, #e8f4fd 0%, #d4ecfb 100%);
+  aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center;
+}
+.feature-img svg { width: 60%; height: 60%; opacity: 0.7; }
+.feature-row-icon {
+  width: 48px; height: 48px; background: var(--accent-light); border-radius: 12px;
+  display: flex; align-items: center; justify-content: center; margin-bottom: 20px; font-size: 22px;
+}
+.feature-row-title { font-size: 28px; font-weight: 800; margin-bottom: 16px; letter-spacing: -1px; }
+.feature-row-desc { font-size: 15px; color: var(--text-secondary); line-height: 1.9; }
+
+/* ========== How it works ========== */
+.howto-section { padding: 100px 0; background: var(--bg-section); }
+.howto-inner { max-width: 1240px; margin: 0 auto; padding: 0 48px; }
+.steps-list { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px; position: relative; }
+.steps-list::before {
+  content: ''; position: absolute; left: 22px; top: 44px; bottom: 44px;
+  width: 2px; background: linear-gradient(180deg, var(--accent) 0%, rgba(245,166,35,0.15) 100%);
+}
+.step-item { display: flex; gap: 28px; align-items: flex-start; position: relative; }
+.step-num {
+  flex-shrink: 0; width: 46px; height: 46px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-orange));
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 800; color: #fff; ¢&÷×6F÷s¢G'&v&#CRÃcbÃ3RÃã2²÷6Föã¢&VÆFfS²¢ÖæFW¢°§Ð¢ç7FWÖ6öçFVçB²FFær×F÷¢g²Ð¢ç7FW×FFÆR²föçB×6¦S¢#'²föçB×vVvC¢²Ö&vâÖ&÷GFöÓ¢²ÆWGFW"×76æs¢ÓãW²Ð¢ç7FWÖFW62²föçB×6¦S¢W²6öÆ÷#¢f"Ò×FWB×6V6öæF'²ÆæRÖVvC¢ã²Ð ¢ò¢ÓÓÓÓÓÓÓÓÓÒ&6ærÓÓÓÓÓÓÓÓÓÒ¢ð¢ç&6ærÖw&B²F7Æ¢w&C²w&B×FV×ÆFRÖ6öÇVÖç3¢&WVB2Âg"²v¢#G²ÆvâÖFV×3¢7F'C²Ð¢ç&6RÖ6&B°¢&6¶w&÷VæC¢f"Ò×vFR²&÷&FW#¢ãW6öÆBf"ÒÖ&÷&FW"²&÷&FW"×&FW3¢f"Ò×&FW2°¢FFæs¢C3'²G&ç6Föã¢ÆÂã73²÷6Föã¢&VÆFfS°§Ð¢ç&6RÖ6&Bç÷VÆ"²&÷&FW"Ö6öÆ÷#¢f"ÒÖ66VçB²&÷×6F÷s¢3g&v&#CRÃcbÃ3RÃãR²Ð¢ç&6RÖ6&Bç÷VÆ#£¦&Vf÷&R°¢6öçFVçC¢~8®888(s²÷6Föã¢'6öÇWFS²F÷¢ÓG²ÆVgC¢SS²G&ç6f÷&Ó¢G&ç6ÆFUÓSR°¢&6¶w&÷VæC¢ÆæV"Öw&FVçB3VFVrÂf"ÒÖ66VçBÂf"ÒÖ66VçBÖ÷&ævR°¢6öÆ÷#¢6ffc²föçB×6¦S¢'²föçB×vVvC¢s²FFæs¢W²&÷&FW"×&FW3¢#²vFR×76S¢æ÷w&°§Ð¢ç&6RÖæÖR²föçB×6¦S¢#²föçB×vVvC¢²Ö&vâÖ&÷GFöÓ¢G²Ð¢ç&6R×7V"²föçB×6¦S¢G²6öÆ÷#¢f"Ò×FWBÖ×WFVB²Ö&vâÖ&÷GFöÓ¢g²Ð¢ç&6RÖÖ÷VçB²F7Æ¢fÆW²ÆvâÖFV×3¢&6VÆæS²v¢'²Ö&vâÖ&÷GFöÓ¢G²Ð¢ç&6RÖ7W'&Væ7²föçB×6¦S¢²föçB×vVvC¢s²Ð¢ç&6R×fÇVR²föçB×6¦S¢C²föçB×vVvC¢²ÆWGFW"×76æs¢Ó'²ÆæRÖVvC¢²Ð¢ç&6R×W&öB²föçB×6¦S¢G²6öÆ÷#¢f"Ò×FWBÖ×WFVB²Ö&vâÖ&÷GFöÓ¢#²Ð¢ç&6RÖfVGW&W2²Æ7B×7GÆS¢æöæS²Ö&vâÖ&÷GFöÓ¢3'²F7Æ¢fÆW²fÆWÖF&V7Föã¢6öÇVÖã²v¢'²Ð¢ç&6RÖfVGW&W2Æ²föçB×6¦S¢G²6öÆ÷#¢f"Ò×FWB×6V6öæF'²F7Æ¢fÆW²ÆvâÖFV×3¢6VçFW#²v¢²Ð¢æ6V6²Öw&£¦&Vf÷&RÂæ6V6²Ö÷&ævS£¦&Vf÷&RÂæ6V6²Ö×WFVC£¦&Vf÷&R°¢6öçFVçC¢rs²F7Æ¢&Æö6³²vGF¢²VvC¢²fÆW×6&æ³¢°¢×vV&¶BÖÖ6³¢W&Â&FF¦ÖvR÷7fr·ÖÂÂS477frfWt&÷Òs##rfÆÃÒv7W'&VçD6öÆ÷"rÖÆç3ÒvGG¢ò÷wwrçs2æ÷&ró#÷7frrS4RS47FfÆÂ×'VÆSÒvWfVæöFBrCÒtÓbãsrRã#6ãCFÂÓÓãCBÂÓBÓFãCBÓãCDÃ"ãSfÃrã#2Órã#6ãCB¢ròS4RS42÷7frS4R"6VçFW"ö6öçFâæò×&WVC°¢Ö6³¢W&Â&FF¦ÖvR÷7fr·ÖÂÂS477frfWt&÷Òs##rfÆÃÒv7W'&VçD6öÆ÷"rÖÆç3ÒvGG¢ò÷wwrçs2æ÷&ró#÷7frrS4RS47FfÆÂ×'VÆSÒvWfVæöFBrCÒtÓbãsrRã#6ãCFÂÓÓãCBÂÓBÓFãCBÓãCDÃ"ãSfÃrã#2Órã#6ãCB¢ròS4RS42÷7frS4R"6VçFW"ö6öçFâæò×&WVC°§Ð¢æ6V6²Öw&£¦&Vf÷&R²&6¶w&÷VæBÖ6öÆ÷#¢f"Ò×FWBÖ×WFVB²Ð¢æ6V6²Ö÷&ævS£¦&Vf÷&R²&6¶w&÷VæBÖ6öÆ÷#¢f"ÒÖ66VçBÖ÷&ævR²Ð¢æ6V6²Ö×WFVC£¦&Vf÷&R²&6¶w&÷VæBÖ6öÆ÷#¢f"Ò×FWBÖ×WFVB²Ð¢æ'Fâ×&6R°¢F7Æ¢&Æö6³²vGF¢S²FFæs¢G²FWBÖÆvã¢6VçFW#°¢&÷&FW"×&FW3¢f"Ò×&FW2×2²föçB×6¦S¢W²föçB×vVvC¢s°¢7W'6÷#¢öçFW#²FWBÖFV6÷&Föã¢æöæS²G&ç6Föã¢ÆÂã'3²&÷&FW#¢æöæS°§Ð¢æ'Fâ×&6R×&Ö'²&6¶w&÷VæC¢f"ÒÖ66VçBÖ÷&ævR²6öÆ÷#¢6ffc²&÷×6F÷s¢GG&v&#3Ã#2ÃCbÃã2²Ð¢æ'Fâ×&6R×&Ö'¦÷fW"²&6¶w&÷VæC¢6SfCc²G&ç6f÷&Ó¢G&ç6ÆFUÓ²Ð¢æ'Fâ×&6RÖ÷WFÆæR²&6¶w&÷VæC¢f"ÒÖ&r²6öÆ÷#¢f"Ò×FWB×&Ö'²&÷&FW#¢ãW6öÆBf"ÒÖ&÷&FW"²Ð¢æ'Fâ×&6RÖ÷WFÆæS¦÷fW"²&÷&FW"Ö6öÆ÷#¢&v&ÃÃÃã"²Ð¢æ'Fâ×&6RÖF&²²&6¶w&÷VæC¢f"Ò×FWB×&Ö'²6öÆ÷#¢6ffc²Ð¢æ'Fâ×&6RÖF&³¦÷fW"²&6¶w&÷VæC¢3333²Ð ¢ò¢ÓÓÓÓÓÓÓÓÓÒdÓÓÓÓÓÓÓÓÓÒ¢ð¢æfÖÆ7B²Ö×vGF¢sC²Ö&vã¢WFó²F7Æ¢fÆW²fÆWÖF&V7Föã¢6öÇVÖã²Ð¢æfÖFVÒ²&÷&FW"Ö&÷GFöÓ¢6öÆBf"ÒÖ&÷&FW"²Ð¢æf×VW7Föâ°¢vGF¢S²FFæs¢#G²F7Æ¢fÆW²ÆvâÖFV×3¢6VçFW#²§W7FgÖ6öçFVçC¢76RÖ&WGvVVã°¢&6¶w&÷VæC¢G&ç7&VçC²&÷&FW#¢æöæS²föçB×6¦S¢g²föçB×vVvC¢c°¢6öÆ÷#¢f"Ò×FWB×&Ö'²7W'6÷#¢öçFW#²FWBÖÆvã¢ÆVgC²föçBÖfÖÇ¢æW&C°§Ð¢æf×VW7Föã¦÷fW"²6öÆ÷#¢f"ÒÖ66VçBÖF&²²Ð¢æfÖ6Wg&öâ²vGF¢#²VvC¢#²G&ç6Föã¢G&ç6f÷&Òã73²6öÆ÷#¢f"Ò×FWBÖ×WFVB²fÆW×6&æ³¢²Ð¢æfÖFVÒæ7FfRæ`aq-chevron { transform: rotate(180deg); }
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
+.faq-item.active .faq-answer { max-height: 200px; }
+.faq-answer-inner { padding: 0 0 24px; font-size: 15px; color: var(--text-secondary); line-height: 1.8; }
+
+/* ========== CTA ========== */
+.cta-section { padding: 100px 48px; background: var(--bg-warm); text-align: center; }
+.cta-mascot { width: 160px; height: 160px; margin: 0 auto 32px; }
+.cta-title { font-size: 40px; font-weight: 900; letter-spacing: -1.5px; margin-bottom: 16px; }
+.cta-desc { font-size: 16px; color: var(--text-secondary); margin-bottom: 40px; max-width: 520px; margin-left: auto; margin-right: auto; line-height: 1.8; }
+.cta-actions { display: flex; align-items: center; justify-content: center; gap: 20px; }
+.cta-note { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-muted); font-weight: 500; }
+.cta-note-icon { display: flex; align-items: center; gap: 2px; }
+.cta-note-icon span { display: block; width: 3px; border-radius: 2px; background: var(--accent-orange); }
+.cta-note-icon span:nth-child(1) { height: 6px; }
+.cta-note-icon span:nth-child(2) { height: 10px; }
+.cta-note-icon span:nth-child(3) { height: 6px; }
+
+/* ========== Footer ========== */
+.footer { padding: 64px 48px 32px; max-width: 1240px; margin: 0 auto; border-top: 1px solid var(--border); }
+.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand-desc { font-size: 13px; color: var(--text-muted); line-height: 1.8; margin-top: 16px; }
+.footer-col-title { font-size: 14px; font-weight: 700; color: var(--text-primary); margin-bottom: 16px; }
+.footer-col a { display: block; font-size: 14px; color: var(--text-muted); text-decoration: none; margin-bottom: 10px; transition: color .2s; }
+.footer-col a:hover { color: var(--text-primary); }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 24px; border-top: 1px solid var(--border); }
+.footer-copy { font-size: 13px; color: var(--text-muted); }
+.footer-powered { font-size: 13px; color: var(--text-muted); }
+.footer-powered strong { color: var(--accent-orange); font-weight: 700; }
+
+/* ========== Animations ========== */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+.animate-in { opacity: 0; animation: fadeInUp .7s ease-out forwards; }
+.delay-1 { animation-delay: .1s; } .delay-2 { animation-delay: .2s; } .delay-3 { animation-delay: .3s; } .delay-4 { animation-delay: .4s; }
+
+/* ========== Responsive ========== */
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; text-align: center; padding-top: 120px; min-height: auto; }
+  .hero-content { max-width: 100%; margin: 0 auto; }
+  .hero-desc { margin-left: auto; margin-right: auto; }
+  .hero-underline { margin-left: auto; margin-right: auto; }
+  .hero-actions { justify-content: center; }
+  .hero-stats { justify-content: center; }
+  .hero-visual { order: -1; }
+  .features-grid, .pricing-grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+  .feature-row, .feature-row.reverse { grid-template-columns: 1fr; direction: ltr; }
+  .hero-title { font-size: 38px; }
+  .header-nav { display: none; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 600px) {
+  .header { padding: 0 20px; }
+  .hero { padding: 110px 20px 60px; }
+  .section { padding: 60px 20px; }
+  .features-detail { padding: 40px 20px 60px; }
+  .howto-inner { padding: 0 20px; }
+  .hero-title { font-size: 32px; letter-spacing: -1px; }
+  .hero-stats { gap: 28px; }
+  .stat-value { font-size: 24px; }
+  .cta-section { padding: 60px 20px; }
+  .cta-title { font-size: 28px; }
+  .footer { padding: 40px 20px 24px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="heade""CÒ&VFW"#à¢ÆFb6Æ73Ò&VFW"ÖÆVgB#à¢Ç7fr6Æ73Ò&ÆövòÖ&VR"fWt&÷Ò#CC"fÆÃÒ&æöæR#à¢ÆVÆÆ6R7Ò##"7Ò#"'Ò#"'Ò#""fÆÃÒ"4cTc#2"óà¢ÆVÆÆ6R7Ò##"7Ò#"'Ò#"'Ò#""fÆÃÒ'W&Â6r"÷6GÒ#ãR"óà¢Ç&V7BÒ#B"Ò##"vGFÒ#""VvCÒ#"ãR"'Ò#ã#R"fÆÃÒ"4SC"÷6GÒ#ãB"óà¢Ç&V7BÒ#R"Ò##B"vGFÒ#"VvCÒ#""'Ò#"fÆÃÒ"4SC"÷6GÒ#ã2"óà¢Æ6&6ÆR7Ò##"7Ò#"#Ò#r"fÆÃÒ"4dccB"7G&ö¶SÒ"4SDDC"7G&ö¶R×vGFÒ#ã"óà¢ÆVÆÆ6R7Ò#r"7Ò#"'Ò#ã"'Ò#"ã""fÆÃÒ"3"óà¢ÆVÆÆ6R7Ò##2"7Ò#"'Ò#ã"'Ò#"ã""fÆÃÒ"3"óà¢Æ6&6ÆR7Ò#rã"7Ò#"#Ò#ãr"fÆÃÒ"6ffb"óà¢Æ6&6ÆR7Ò##2ã"7Ò#"#Ò#ãr"fÆÃÒ"6ffb"óà¢ÇFCÒ$ÓB#bãR#"B"7G&ö¶SÒ"3"7G&ö¶R×vGFÒ#"fÆÃÒ&æöæR"7G&ö¶RÖÆæV6Ò'&÷VæB"óà¢ÆÆæRÒ#r"Ò#B"#Ò#R"#Ò#"7G&ö¶SÒ"33"7G&ö¶R×vGFÒ#ã""7G&ö¶RÖÆæV6Ò'&÷VæB"óà¢ÆÆæRÒ##2"Ò#B"#Ò##R"#Ò#"7G&ö¶SÒ"33"7G&ö¶R×vGFÒ#ã""7G&ö¶RÖÆæV6Ò'&÷VæB"óà¢Æ6&6ÆR7Ò#R"7Ò#ã"#Ò#ãR"fÆÃÒ"4cTc#2"óà¢Æ6&6ÆR7Ò##R"7Ò#ã"#Ò#ãR"fÆÃÒ"4cTc#2"óà¢ÆVÆÆ6R7Ò#"7Ò#b"'Ò#R"'Ò#r"fÆÃÒ"4cTc#2"÷6GÒ#ã"G&ç6f÷&ÓÒ'&÷FFRÓ"b"óà¢ÆVÆÆ6R7Ò#3"7Ò#b"'Ò#R"'Ò#r"fÆÃÒ"4cTc#2"÷6GÒ#ã"G&ç6f÷&ÓÒ'&÷FFR"3b"óà¢ÇFCÒ$Ó#Ã#3BÃ#"#"fÆÃÒ"4SC"÷6GÒ#ãR"óà¢ÆFVg3ãÆÆæV$w&FVçBCÒ&r"Ò##"Ò#b"#Ò##"#Ò#3#ãÇ7F÷öfg6WCÒ#R"7F÷Ö6öÆ÷#Ò"4ddCsdR"óãÇ7F÷öfg6WCÒ#R"7F÷Ö6öÆ÷#Ò"4cTc#2"óãÂöÆæV$w&FVçCãÂöFVg3à¢Â÷7fsà¢Ç7â6Æ73Ò&Æövò×FWB#ä'W§¢fö6SÂ÷7ãà¢ÆFb6Æ73Ò&Æövò×vfW2#ãÇ7ããÂ÷7ããÇ7ããÂ÷7ããÇ7ããÂ÷7ããÂöFcà¢ÂöFcà¢Ææb6Æ73Ò&VFW"Öæb#à¢Æ&VcÒ"6fVGW&W2#îx[ëCÂöà¢Æ&VcÒ"6÷wFò#îKÛþ8NikÂöà¢Æ&VcÒ"7&6ær#îiiyÂöà¢Æ&VcÒ"6f#ädÂöà¢Âöæcà¢ÆFb6Æ73Ò&VFW"×&vB#à¢Æ&VcÒ"2"6Æ73Ò&'FâÖÆövâ#î8:Þ8+8*N8;3Âöà¢Æ&VcÒ"7&6ær"6Æ73Ò&'FâÖ7F#îxJii8~Zx¾8(8(³Âöà¢ÂöFcà£ÂöVFW#à £ÂÒÒW&òÒÓà£Ç6V7Föâ6Æ73Ò&W&ò#à¢ÆFb6Æ73Ò&W&òÖ6öçFVçB#à¢ÆFb6Æ73Ò&W&òÖ&FvRæÖFRÖâ#à¢Ç7frfWt&÷Ò##B#B"fÆÃÒ&æöæR"7G&ö¶SÒ&7W'&VçD6öÆ÷""7G&ö¶R×vGFÒ#"#ãÇFCÒ$Ó"&22Ó27cf22bcV22Ó2Ó7¢"óãÇFCÒ$ÓcrrÓBbÓ"óãÆÆæRÒ#""Ò#"#Ò#""#Ò##""óãÂ÷7fsà¢%U¥¢ÔTD$U4TåE0¢ÂöFcà¢Æ6Æ73Ò&W&ò×FFÆRæÖFRÖâFVÆÓ#î8888~8Æ'#î88n8*Þ8+888¾8®8(¾8#Âöà¢ÆFb6Æ73Ò&W&ò×VæFW&ÆæRæÖFRÖâFVÆÓ#ãÂöFcà¢Ç6Æ73Ò&W&òÖFW62æÖFRÖâFVÆÓ"#ä'W§¢fö6^8þ88Îû>Z;8).8:®8*.8:¾8+þ8*N8:8~¹{+î[ªn8¾88n8*Þ8+88XÉn88(¾jÊKnKº>8îû>Z;XZ^X©¾8+^8;Î89>8+8~88.z®xKn8¾8888~88.8®8þ8î8Î8*þ8:®8*.8®ih~zº8¾ZH8(þ8(®8î88#Â÷à¢ÆFb6Æ73Ò&W&òÖ7Föç2æÖFRÖâFVÆÓ2#à¢Æ&VcÒ"7&6ær"6Æ73Ò&'Fâ×&Ö'#îxJii8~Zx¾8(8(²Ç7â6Æ73Ò&'&÷r#î(i#Â÷7ããÂöà¢Æ&VcÒ"6fVGW&W2"6Æ73Ò&'Fâ×6V6öæF'#î>8~8þh¾8(³Âöà¢ÂöFcà¢ÆFb6Æ73Ò&W&ò×7FG2æÖFRÖâFVÆÓB#à¢ÆFb6Æ73Ò'7FBÖFVÒ#ãÇ7â6Æ73Ò'7FB×fÇVR#ãã"SÂ÷7ããÇ7â6Æ73Ò'7FBÖÆ&VÂ#î¨ÞÙ{+î[ªcÂ÷7ããÂöFcà¢ÆFb6Æ73Ò'7FBÖFVÒ#ãÇ7â6Æ73Ò'7FB×fÇVR#ãS×3Â÷7ããÇ7â6Æ73Ò'7FBÖÆ&VÂ#î8:Î8*N88n8;>8+sÂ÷7ããÂöFcà¢ÆFb6Æ73Ò'7FBÖFVÒ#ãÇ7â6Æ73Ò'7FB×fÇVR#ã3³Â÷7ããÇ7â6Æ73Ò'7FBÖÆ&VÂ#îZûî[ùÎ©ãÂ÷7ããÂöFcà¢ÂöFcà¢ÂöFcà¢ÆFb6Æ73Ò&W&ò×f7VÂæÖFRÖâFVÆÓ"#à¢ÆFb6Æ73Ò&W&òÖÆÇW7G&Föâ#à¢ÆFb6Æ73Ò&VFòÖ&'2#ãÇ7ããÂ÷7ããÇ7ããÂ÷7ããÇ7ããÂ÷7ããÇ7ããÂ÷7ããÇ7ããÂ÷7ããÇ7ããÂ÷7ããÇ7ããÂ÷7ããÇ7ããÂ÷7ããÇ7ããÂ÷7ããÂöFcà¢ÆFb6Æ73Ò&Ö66÷BÖ6öçFæW"#à¢Ç7fr6Æ73Ò&Ö66÷B×7fr"fWt&÷Ò#CC"fÆÃÒ&æöæR#à¢ÆVÆÆ6R7Ò##"7Ò##"'Ò#"'Ò#"fÆÃÒ"4cTc#2"óà¢ÆVÆÆ6R7Ò##"7Ò##"'Ò#"'Ò#"fÀl="url(#mb)" opacity="0.45"/>
+          <rect x="132" y="230" width="136" height="14" rx="7" fill="#E8941A" opacity="0.35"/>
+          <rect x="138" y="250" width="124" height="12" rx="6" fill="#E8941A" opacity="0.3"/>
+          <rect x="146" y="268" width="108" height="10" rx="5" fill="#E8941A" opacity="0.25"/>
+          <circle cx="200" cy="135" r="60" fill="#F0EDEA"/>
+          <circle cx="200" cy="135" r="56" fill="#FAF8F4" stroke="#DDD9D3" stroke-width="1.5"/>
+          <ellipse cx="180" cy="130" rx="14" ry="17" fill="#1a1a19"/>
+          <ellipse cx="220" cy="130" rx="14" ry="17" fill="#1a1a19"/>
+          <circle cx="184" cy="124" r="5" fill="#fff"/>
+          <circle cx="224" cy="124" r="5" fill="#fff"/>
+          <circle cx="178" cy="132" r="2" fill="#fff" opacity="0.5"/>
+          <circle cx="218" cy="132" r="2" fill="#fff" opacity="0.5"/>
+          <path d="M186 155 Q200 168 214 155" stroke="#1a1a19" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <line x1="178" y1="78" x2="165" y2="48" stroke="#8C8880" stroke-width="3" stroke-linecap="round"/>
+          <line x1="222" y1="78" x2="235" y2="48" stroke="#8C8880" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="165" cy="45" r="7" fill="#F5A623"/><circle cx="235" cy="45" r="7" fill="#F5A623"/>
+          <circle cx="165" cy="45" r="3.5" fill="#FFD76E"/><circle cx="235" cy="45" r="3.5" fill="#FFD76E"/>
+          <ellipse cx="108" cy="175" rx="42" ry="58" fill="#F5A623" opacity="0.1" transform="rotate(-12 108 175)"/>
+          <ellipse cx="108" cy="175" rx="38" ry="52" fill="none" stroke="#F5A623" stroke-width="1.5" opacity="0.18" transform="rotate(-12 108 175)"/>
+          <ellipse cx="292" cy="175" rx="42" ry="58" fill="#F5A623" opacity="0.1" transform="rotate(12 292 175)"/>
+          <ellipse cx="292" cy="175" rx="38" ry="52" fill="none" stroke="#F5A623" stroke-width="1.5" opacity="0.18" transform="rotate(12 292 175)"/>
+          <circle cx="112" cy="225" r="16" fill="#F0EDEA" stroke="#DDD9D3" stroke-width="1.5"/>
+          <circle cx="288" cy="225" r="16" fill="#F0EDEA" stroke="#DDD9D3" stroke-width="1.5"/>
+          <rect x="278" y="194" width="10" height="32" rx="5" fill="#A09890"/>
+          <circle cx="283" cy="188" r="10" fill="#B8B0A8" stroke="#A09890" stroke-width="1.5"/>
+          <circle cx="283" cy="188" r="7" fill="none" stroke="#C8C0B8" stroke-width="0.8" stroke-dasharray="2.5 2.5"/>
+          <path d="M300 182 Q312 182 312 190" stroke="#F5A623" stroke-width="2" fill="none" opacity="0.4" stroke-linecap="round"/>
+          <path d="M305 174 Q322 176 320 194" stroke="#F5A623" stroke-width="1.5" fill="none" opacity="0.25" stroke-linecap="round"/>
+          <path d="M190 298 L200 320 L210 298" fill="#E8941A"/>
+          <ellipse cx="175" cy="306" rx="18" ry="9" fill="#F0EDEA" stroke="#DDD9D3" stroke-width="1.5"/>
+          <ellipse cx="225" cy="306" rx="18" ry="9" fill="#F0EDEA" stroke="#DDD9D3" stroke-width="1.5"/>
+          <defs><linearGradient id="mb" x1="200" y1="120" x2="200" y2="300"><stop offset="0%" stop-color="#FFD76E"/><stop offset="100%" stop-color="#F5A623"/></linearGradient></defs>
+        </svg>
+      </div>
+      <div class="app-preview">
+        <div class="app-preview-dot"></div>
+        <span class="app-preview-text">Dictating with <strong>Buzz Voice</strong></span>
+        <div class="app-preview-waves"><span></span><span></span><span></span></div>
+        <span class="app-preview-time">0:05</span>
+        <div class="app-preview-rec"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features cards -->
+<section class="section" id="features">
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+      <div class="feature-title">ããããã¢ããªã«å¯¾å¿</div>
+      <div class="feature-desc">ã¡ã¼ã«ããã
+>88>888888*Þ8:^8:8;>8888+>8;Î888*88~8*>8+þ8®88888n8î88n8*Þ8+88XZ^X©¾89^8*>8;Î8:¾888~XyJXúþ;Þ8#ÂöFcà¢ÂöFcà¢ÆFb6Æ73Ò&fVGW&RÖ6&B#à¢ÆFb6Æ73Ò&fVGW&RÖ6öâ#ãÇ7frfWt&÷Ò##B#B"fÆÃÒ&æöæR"7G&ö¶SÒ&7W'&VçD6öÆ÷""7G&ö¶R×vGFÒ#""7G&ö¶RÖÆæV6Ò'&÷VæB#ãÆ6&6ÆR7Ò#""7Ò#""#Ò#"óãÆÆæRÒ#""Ò#""#Ò##""#Ò#""óãÇFCÒ$Ó"&Rã2Rã2BRã2Rã2ÓBRã2Rã2ÓBÓRã2Rã2BÓ¢"óãÂ÷7fsãÂöFcà¢ÆFb6Æ73Ò&fVGW&R×FFÆR#ã3Kº^K®8î©î8¾Zûî[ùÃÂöFcà¢ÆFb6Æ73Ò&fVGW&RÖFW62#îiz^iÊÎ©î8þ8(.88(Þ8)>8»©î8KÞY»Þ©î8®83Kº^K®8î©î8).8+^89Þ8;Î888.ZI®©îy+Z(>8~8(.8+~8;Î8:8:Î8+8¾XyJ8~8Þ8î88#ÂöFcà¢ÂöFcà¢ÆFb6Æ73Ò&fVGW&RÖ6&B#à¢ÆFb6Æ73Ò&fVGW&RÖ6öâ#ãÇ7frfWt&÷Ò##B#B"fÆÃÒ&æöæR"7G&ö¶SÒ&7W'&VçD6öÆ÷""7G&ö¶R×vGFÒ#""7G&ö¶RÖÆæV6Ò'&÷VæB#ãÇFCÒ$Ó"#'3ÓBÓcVÂÓÓ2Ó7cv3b¢"óãÂ÷7fsãÂöFcà¢ÆFb6Æ73Ò&fVGW&R×FFÆR#î89~8:8*N898+~8;ÎKùÞÛsÂöFcà¢ÆFb6Æ73Ò&fVGW&RÖFW62#îû>Z;88~8;Î8+þ8þzºþiÊ¾K®8~Xznyn8^8(Î88+^8;Î898;Î8¾KùÞZÙ8^8(Î8î8¾8)>8.KÈjZÞ8î8+¾8*Þ8:^8:®88n8*>89Þ8:®8+~8;Î8¾8(.Zûî[ùÎ8~8î88#ÂöFcà¢ÂöFcà¢ÂöFcà£Â÷6V7Föãà £ÂÒÒfVGW&W2FWFÂÒÓà£Ç6V7Föâ6Æ73Ò&fVGW&W2ÖFWFÂ#à¢ÆFb6Æ73Ò'6V7FöâÖÆ&VÂ#ädTEU$U3ÂöFcà¢ÆFb6Æ73Ò'6V7Föâ×FFÆR#îZ;8).8X©¾8¾ZH88(³ÂöFcà¢ÆFb6Æ73Ò&fVGW&W2ÖFWFÂ6V7Föâ×7V'FFÆR"7GÆSÒ&föçB×6¦S£#G¶föçB×vVvC£c¶6öÆ÷#§f"Ò×FWBÖ×WFVB¶Ö&vâÖ&÷GFöÓ£Sg²#î88n8*þ88î8:Þ8+8;ÃÂöFcà ¢ÆFb6Æ73Ò&fVGW&R×&÷r#à¢ÆFb6Æ73Ò&fVGW&RÖÖr#à¢Ç7frfWt&÷Ò##S"fÆÃÒ&æöæR#ãÇ&V7BÒ#3"Ò##"vGFÒ#C"VvCÒ#"'Ò#"fÆÃÒ"6CFV6f""÷6GÒ#ãR"óãÇ&V7BÒ#S"Ò#S"vGFÒ#"VvCÒ#b"'Ò#2"fÆÃÒ"3V&#cR"÷6GÒ#ã2"óãÇ&V7BÒ#S"Ò#cB"vGFÒ#"VvCÒ#b"'Ò#2"fÆÃÒ"3V&#cR"÷6GÒ#ã""óãÇ&V7BÒ#S"Ò#s"vGFÒ#"VvCÒ#b"'Ò#2"fÆÃÒ"3V&#cR"÷6GÒ#ã#R"óãÆ6&6ÆR7Ò#"7Ò#R"#Ò#b"fÆÃÒ&æöæR"7G&ö¶SÒ"3V&#cR"7G&ö¶R×vGFÒ#""÷6GÒ#ãB"óãÇFCÒ$ÓR'bÓRRc"7G&ö¶SÒ"3V&#cR"7G&ö¶R×vGFÒ#""fÆÃÒ&æöæR"óãÇFCÒ$Ó"&b"7G&ö¶SÒ"3V&#cR"7G&ö¶R×vGFÒ#ãR"fÆÃÒ&æöæR"óãÂ÷7fsà¢ÂöFcà¢ÆFb6Æ73Ò&fVGW&R×&÷rÖ6öçFVçB#à¢ÆFb6Æ73Ò&fVGW&R×&÷rÖ6öâ#ï	øéûóÂöFcà¢ÆFb6Æ73Ò&fVGW&R×&÷r×FFÆR#î8:®8*.8:¾8+þ8*N8:ih~ZÙ~[~8>8sÂöFcà¢ÆFb6Æ73Ò&fVGW&R×&÷rÖFW62#î8~8þ8ÎyêÎi.8¾88n8*Þ8+888¾ZHhù¾8^8(Î8î88#S×>Kº^K¾8îh^KØî8:Î8*N88n8;>8+~8~8z®xKn8®KÉ®8î8+89N8;Î888¾ûÞ[é>8~8î88#ÂöFcà¢ÂöFcà¢ÂöFcà ¢ÆFb6Æ73Ò&fVGW&R×&÷r&WfW'6R#à¢ÆFb6Æ73Ò&fVGW&RÖÖr#à¢Ç7frfWt&÷Ò##S"fÆÃÒ&æöæR#ãÆ6&6ÆR7Ò#"7Ò#sR"#Ò#S"fÆÃÒ"6CFV6f""÷6GÒ#ã2"óãÆ6&6ÆR7Ò#"7Ò#sR"#Ò#3R"fÆÃÒ&æöæR"7G&ö¶SÒ"3V&#cR"7G&ö¶R×vGFÒ#""÷6GÒ#ãB"óãÇFWBÒ#sb"Ò#B"föçB×6¦SÒ##"föçB×vVvCÒ#"fÆÃÒ"3V&#cR"÷6GÒ#ãR#ãSÂ÷FWCãÇ&V7BÒ#C"Ò#R"vGFÒ##"VvCÒ#B"'Ò#""fÆÃÒ"3V&#cR"÷6GÒ#ã""óãÇ&V7BÒ#C"Ò#R"vGFÒ#"VvCÒ#B"'Ò#""fÆÃÒ"3V&#cR"÷6GÒ#ã3R"óãÂ÷7fsà¢ÂöFcà¢ÆFb6Æ73Ò&fVGW&R×&÷rÖ6öçFVçB#à¢ÆFb6Æ73Ò&fVGW&R×&÷rÖ6öâ#ï	øêóÂöFcà¢ÆFb6Æ73Ò&fVGW&R×&÷r×FFÆR#ãã"^8î¨ÞÙ{+î[ªcÂöFcà¢ÆFb6Æ73Ò&fVGW&R×&÷rÖFW62#îjZÞ{Î8888>89~8*þ8:8+8î¨ÞÙ{+î[ªn8).Zéþxûî8.88î8*N8+®8îZI®8Ny+Z(>8~8(.¹8N{+î[ªn8).{jÞhÈ8~8KúîjÚ>8îh¾i>8).ZJ~[^8¾X®k¾8~8î88#ÂöFcà¢ÂöFcà¢ÂöFcà ¢ÆFb6Æ73Ò&fVGW&R×&÷r#à¢ÆFb6Æ73Ò&fVGW&RÖÖr#à¢Ç7frfWt&÷Ò##S"fÆÃÒ&æöæR#ãÇ&V7BÒ#S"Ò#3"vGFÒ#"VvCÒ#s"'Ò#"fÆÃÒ"6CFV6f""÷6GÒ#ã2"óãÆ6&6ÆR7Ò#"7Ò#cR"#Ò#B"fÆÃÒ"3V&#cR"÷6GÒ#ãR"óãÆ6&6ÆR7Ò#"7Ò#SR"#Ò#B"fÆÃÒ"3V&#cR"÷6GÒ#ãR"óãÆ6&6ÆR7Ò##"7Ò#cR"#Ò#B"fÆÃÒ"3V&#cR"÷6GÒ#ãR"óãÆÆæRÒ#"Ò#cR"#Ò#"#Ò#SR"7G&ö¶SÒ"3V&#cR"7G&ö¶R×vGF="1.5" opacity="0.3"/><line x1="100" y1="55" x2="120" y2="65" stroke="#5bb8f5" stroke-width="1.5" opacity="0.3"/><rect x="60" y="112" width="80" height="6" rx="3" fill="#5bb8f5" opacity="0.2"/><rect x="70" y="124" width="60" height="6" rx="3" fill="#5bb8f5" opacity="0.15"/></svg>
+    </div>
+    <div class="feature-row-content">
+      <div class="feature-row-icon">ð§ </div>
+      <div class="feature-row-title">AIæèçè§£</div>
+      <div class="feature-row-desc">ææ°ã®AIã¢ãã«ãæèãçè§£ããå°é ç¨èªãåºæåè©ãæ­£ç¢ºã«èªè­ãè©·ãè¨èãèªç¶ãªæ¸ãè¨èã«èªåå¤æãã¾ãã</div>
+    </div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="howto-section" id="howto">
+  <div class="howto-inner section-center">
+    <div class="section-label">HOW IT WORKS</div>
+    <div class="section-title">4ã¤ã®ã¹ãããã§å§ãã</div>
+    <p class="section-desc" style="margin-left:auto;margin-right:auto;">ã»ããã¢ããã¯é©ãã»ã©ç°¡åãæ°åã§é³å£°å¥åã®ä¸çãåºããã¾ãã</p>
+    <div class="steps-list">
+      <div class="step-item"><div class="step-num">01</div><div class="step-content"><div class="step-title">ã¢ããªãã¤ã³ã¹ãã¼ã«</div><div class="step-desc">MacãWindowsãiOSã«å¯¾å¿ããã¦ã³ã­ã¼ããã¦ã¢ã«ã¦ã³ããä½æããã ãã§ãããã«ä½¿ãå§ãããã¾ãã</div></div></div>
+      <div class="step-item"><div class="step-num">02</div><div class="step-content"><div class="step-title">ãã¤ã¯ã«åãã£ã¦è©±ã</div><div class="step-desc">ãã­ã¹ãå¥åãããå ´æã«ã«ã¼ã½ã«ãç½®ããã·ã§ã¼ãã«ããã­ã¼ãæ¼ãã¦è©±ãå§ããã ããç¹å¥ãªæä½ã¯ä¸è¦ã§ãã</div></div></div>
+      <div class="step-item"><div class="step-num">03</div><div class="step-content"><div class="step-title">AIããã­ã¹ãã«å¤æ</div><div class="step-desc">ããªãã®å£°ãAIããªã¢ã«ã¿ã¤ã ã§è§£æããæèãçè§£ããä¸ã§èªç¶ãªæç« ã«å¤æãå¥èª­ç¹ãèªåã§æ¿å¥ããã¾ãã</div></div></div>
+      <div class="step-item"><div class="step-num">04</div><div class="step-content"><div class="step-title">ç·¨éã»æ´»ç¨ãã</div><div class="step-desc">å¤æããããã­ã¹ãã¯ãã®ã¾ã¾ä½¿ããã¯ãªãªãã£ãå¿è¦ã«å¿ãã¦é³å£°ã³ãã³ãã§ç·¨éãä¿®æ­£ãå¯è½ã§ãã</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="section section-center" id="pricing">
+  <div class="section-label">PRICING</div>
+  <div class="section-title">ã·ã³ãã«ãªæéãã©ã³</div>
+  <p class="section-desc" style="margin-left:auto;margin-right:auto;">ç¡æãã©ã³ããå§ãã¦ãå¿è¦ã«å¿ãã¦ã¢ããã°ã¬ã¼ãã<br>ãã¹ã¦ã®ãã©ã³ã«14æ¥éã®ç¡æãã©ã¤ã¢ã«ä»ãã</p>
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-name">Free</div>
+      <div class="price-sub">ã¾ãã¯è©¦ãã¦ã¿ããæ¹ã«</div>
+      <div class="price-amount"><span class="price-currency">Â¥</span><span class="price-value">0</span></div>
+      <div class="price-period">æ°¸ä¹ç¡æ</div>
+      <ul class="price-features">
+        <li class="check-gray">æ60åã®é³å£°å¥å</li>
+        <li class="check-gray">åºæ¬çãªæå­èµ·ãã</li>
+        <li class="check-gray">æ¥æ¬èªã»è±èªå¯¾å¿</li>
+        <li class="check-gray">ãã¹ã¯ãããã¢ããª</li>
+      </ul>
+      <a href="#" class="btn-price btn-price-outline">ç¡æã§å§ãã</a>
+    </div>
+    <div class="price-card popular">
+      <div class="price-name">Pro</div>
+      <div class="price-sub">åäººã§ãã«æ´»ç¨ãããæ¹ã«</div>
+      <div class="price-amount"><span class="price-currency">Â¥</span><span class="price-value">1,500</span></div>
+      <div class="price-period">/æ</div>
+      <ul class="price-features">
+        <li class="check-orange">ç¡å¶éã®é³å£°å¥å</li>
+        <li class="check-orange">AIæèçz>8;¾z®X¹^KúîjÚ3ÂöÆà¢ÆÆ6Æ73Ò&6V6²Ö÷&ævR#ã3Kº^K®8î©îZûî[ùÃÂöÆà¢ÆÆ6Æ73Ò&6V6²Ö÷&ævR#î8*¾8+8+þ8:éîi»y¾Ë#ÂöÆà¢ÆÆ6Æ73Ò&6V6²Ö÷&ævR#îû>Z;8+>89î8;>88{z¸cÂöÆà¢ÆÆ6Æ73Ò&6V6²Ö÷&ævR#îXJ®XX8+^89Þ8;Î88ÂöÆà¢Â÷VÃà¢Æ&VcÒ"2"6Æ73Ò&'Fâ×&6R'Fâ×&6R×&Ö'#å&þ8).Zx¾8(8(³Âöà¢ÂöFcà¢ÆFb6Æ73Ò'&6RÖ6&B#à¢ÆFb6Æ73Ò'&6RÖæÖR#äVçFW'&6SÂöFcà¢ÆFb6Æ73Ò'&6R×7V"#î888;Î8:8;¾k9^K«®8~8î8NXyJ8³ÂöFcà¢ÆFb6Æ73Ò'&6RÖÖ÷VçB#ãÇ7â7GÆSÒ&föçB×6¦S£3'¶föçB×vVvC£¶ÆWGFW"×76æs¢Ó²#î8®YXþ8NY8(þ8³Â÷7ããÂöFcà¢ÆFb6Æ73Ò'&6R×W&öB#âfæ'7³ÂöFcà¢ÇVÂ6Æ73Ò'&6RÖfVGW&W2#à¢ÆÆ6Æ73Ò&6V6²Ö×WFVB#å&þ8îXZjþ;ÓÂöÆà¢ÆÆ6Æ73Ò&6V6²Ö×WFVB#î888;Î8:zêyn8888>8+~8:^89Î8;Î88ÂöÆà¢ÆÆ6Æ73Ò&6V6²Ö×WFVB#å54òò4ÔÎ¨ÞÃÂöÆà¢ÆÆ6Æ73Ò&6V6²Ö×WFVB#î8*®8;>89~8:Î89þ8+Zûî[ùÃÂöÆà¢ÆÆ6Æ73Ò&6V6²Ö×WFVB#î8*¾8+8+þ8:
+>i£ÂöÆà¢ÆÆ6Æ73Ò&6V6²Ö×WFVB#î[.K»¾8+^89Þ8;Î88h¸^[Ù3ÂöÆà¢ÆÆ6Æ73Ò&6V6²Ö×WFVB#å4ÄKùÞÃÂöÆà¢Â÷VÃà¢Æ&VcÒ"2"6Æ73Ò&'Fâ×&6R'Fâ×&6RÖF&²#î8®YXþ8NY8(þ8³Âöà¢ÂöFcà¢ÂöFcà£Â÷6V7Föãà £ÂÒÒdÒÓà£Ç6V7Föâ6Æ73Ò'6V7Föâ6V7FöâÖ6VçFW""CÒ&f#à¢ÆFb6Æ73Ò'6V7FöâÖÆ&VÂ#ädÂöFcà¢ÆFb6Æ73Ò'6V7Föâ×FFÆR#î8(8þ8.8(¾:®YXóÂöFcà¢ÆFb7GÆSÒ&VvC£C²#ãÂöFcà¢ÆFb6Æ73Ò&fÖÆ7B#à¢ÆFb6Æ73Ò&fÖFVÒ#ãÆ'WGFöâ6Æ73Ò&f×VW7Föâ#ä'W§¢fö6^8þ88î88~898*N8+8~XyJ8~8Þ8î88¾ûÉóÇ7fr6Æ73Ò&fÖ6Wg&öâ"fWt&÷Ò###"fÆÃÒ&7W'&VçD6öÆ÷"#ãÇFCÒ$ÓRã#2rã#ãsRãsRãbã$ÃãcÃ2ãsÓ2ã3ãsRãsRããFÂÓBã#RBãVãsRãsRÓãÂÓBã#RÓBãVãsRãsRã"Óãg¢"óãÂ÷7fsãÂö'WGFöããÆFb6Æ73Ò&fÖç7vW"#ãÆFb6Æ73Ò&fÖç7vW"ÖææW"#æÖ4õ>ûÈÆR6Æ6öâòçFVÎûÈ8væF÷w>8¾Zûî[ùÎ8~8n8N8î88&õ>x8(.K¸®[èÎ8:®8:®8;Î8+K¨Zé®8~88#ÂöFcãÂöFcãÂöFcà¢ÆFb6Æ73Ò&fÖFVÒ#ãÆ'WGFöâ6Æ73Ò&f×VW7Föâ#î8*®89^8:8*N8;>8~8(.KÛþyJ8~8Þ8î88¾ûÉóÇ7fr6Æ73Ò&fÖ6Wg&öâ"fWt&÷Ò###"fÆÃÒ&7W'&VçD6öÆ÷"#ãÇFCÒ$ÓRã#2rã#ãsRãsRãbã$ÃãcÃ2ãsÓ2ã3ãsRãsRããFÂÓBã#RBãVãsRãsRÓãÂÓBã#RÓBãVãsRãsRã"Óãg¢"óãÂ÷7fsãÂö'WGFöããÆFb6Æ73Ò&fÖç7vW"#ãÆFb6Æ73Ò&fÖç7vW"ÖææW"#îYû®iÊÎjþ;Þ8þ8*®89^8:8*N8;>8~8(.XyJXúþ;Þ8~88$ih~Hynz>8(N¹{+î[ªn¨ÞÙ8þ8*þ8:8*n88Xznyn8î8þ8(88*N8;>8+þ8;Î88Þ88>88hê^{i®8Î[ø^h8~88#ÂöFcãÂöFcãÂöFcà¢ÆFb6Æ73Ò&fÖFVÒ#ãÆ'WGFöâ6Æ73Ò&f×VW7Föâ#îû>Z;88~8;Î8+þ8þ88î8(8n8¾h8(þ8(Î8î88¾ûÉóÇ7fr6Æ73Ò&fÖ6Wg&öâ"fWt&÷Ò###"fÆÃÒ&7W'&VçD6öÆ÷"#ãÇFCÒ$ÓRã#2rã#ãsRãsRãbã$ÃãcÃ2ãsÓ2ã3ãsRãsRããFÂÓBã#RBãVãsRãsRÓãÂÓBã#RÓBãVãsRãsRã"Óãg¢"óãÂ÷7fsãÂö'WGFöããÆFb6Æ73Ò&fÖç7vW"#ãÆFb6Æ73Ò&fÖç7vW"ÖææW"#îû>Z;88~8;Î8+þ8þ8:®8*.8:¾8+þ8*N8:8~Xznyn8^8(Î88+^8;Î898;Î8¾KùÞZÙ8^8(Î8î8¾8)>8.89~8:8*N898+~8;Î8).iÈXJ®XX8¾Þ8~8n8N8î88#ÂöFcãÂöFcãÂöFcà¢ÆFb6Æ73Ò&fÖFVÒ#ãÆ'WGFöâ6Æ73Ò&f×VW7Föâ#î[.ZyJ©î8(NY»®iÈYÞî8þjÚ>8~8þ¨ÞÙ8^8(Î8î88¾ûÉóÇ7fr6Æ73Ò&fÖ6Wg&öâ"fWt&÷Ò###"fÆÃÒ&7W'&VçD6öÆ÷"#ãÇFCÒ$ÓRã#2rã#ãsRãsRãbã$ÃãcÃ2ãsÓ2ã3ãsRãsRããFÂÓBã#RBãVãsRãsRÓãÂÓBã#RÓBãVãsRãsRã"Óãg¢"óãÂ÷7fsãÂö'WGFöããÆFb6Æ73Ò&fÖç7vW"#ãÆFb6Æ73Ò&fÖç7vW"ÖææW"#î8*¾8+8+þ8:éîi»jþ;Þ8~[.hyJ©î8(NY»®iÈYÞî8).y¾Ë.8~8Þ8î88$8Îih~H8¾8(X~8®yJ©î8).h©î88(¾{+î[ªn8(.iz^8^Y	K®8~8n8N8î88#ÂöFcãÂöFcãÂöFcà¢ÆFb6Æ73Ò&fÖFVÒ#ãÆ'WGFöâ6Æ73Ò&f×VW7Föâ#îizii89~8:8;>8¾8(iÈii89~8:8;>88îz{¾Î8þ8+8:8;Î8+®8~88¾ûÉóÇ7fr6Æ73Ò&fÖ6Wg&öâ"fWt&÷Ò###"fÆÃÒ&7W'&VçD6öÆ÷"#ãÇFCÒ$ÓRã#2rã#ãsRãsRãbã$ÃãcÃ2ãsÓ2ã3ãsRãsRããFÂÓBã#RBãVãsRãsRÓãÂÓBã#RÓBãVà75.75 0 01.02-1.06z"/></svg></button><div class="faq-answer"><div class="faq-answer-inner">ã¯ããã¢ããªåããã¯ã³ã¯ãªãã¯ã§ã¢ããã°ã¬ã¼ãã§ãã¾ãããã¼ã¿ãè¨­å®ã¯ãã®ã¾ã¾å¼ãç¶ããã¾ãã</div></div></div>
+    <div class="faq-item"><button class="faq-question">æ³äººã§ã®å°å¥ãæ¤è¨ãã¦ãã¾ãããµãã¼ãã¯ããã¾ããï¼<svg class="faq-chevron" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg></button><div class="faq-answer"><div class="faq-answer-inner">Enterpriseãã©ã³ã§ã¯å°ä»»ã®ãµãã¼ãæå½ãå°å¥ããéç¨ã¾ã§ãµãã¼ããã¾ããSSOé£æºããªã³ãã¬ãã¹å¯¾å¿ããç¸è«ãã ããã</div></div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <svg class="cta-mascot" viewBox="0 0 160 160" fill="none">
+    <ellipse cx="80" cy="85" rx="36" ry="40" fill="#F5A623"/>
+    <ellipse cx="80" cy="85" rx="36" ry="40" fill="url(#cg)" opacity="0.4"/>
+    <rect x="52" y="94" width="56" height="6" rx="3" fill="#E8941A" opacity="0.35"/>
+    <rect x="56" y="104" width="48" height="5" rx="2.5" fill="#E8941A" opacity="0.3"/>
+    <circle cx="80" cy="55" r="26" fill="#FAF8F4" stroke="#DDD9D3" stroke-width="1"/>
+    <ellipse cx="72" cy="53" rx="5.5" ry="7" fill="#1a1a19"/>
+    <ellipse cx="88" cy="53" rx="5.5" ry="7" fill="#1a1a19"/>
+    <circle cx="73.5" cy="50" r="2" fill="#fff"/>
+    <circle cx="89.5" cy="50" r="2" fill="#fff"/>
+    <path d="M75 64 Q80 70 85 64" stroke="#1a1a19" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <line x1="72" y1="32" x2="66" y2="18" stroke="#8C8880" stroke-width="2" stroke-linecap="round"/>
+    <line x1="88" y1="32" x2="94" y2="18" stroke="#8C8880" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="66" cy="16" r="4" fill="#F5A623"/><circle cx="94" cy="16" r="4" fill="#F5A623"/>
+    <ellipse cx="44" cy="78" rx="18" ry="24" fill="#F5A623" opacity="0.1" transform="rotate(-12 44 78)"/>
+    <ellipse cx="116" cy="78" rx="18" ry="24" fill="#F5A623" opacity="0.1" transform="rotate(12 116 78)"/>
+    <circle cx="46" cy="92" r="8" fill="#F0EDEA" stroke="#DDD9D3" stroke-width="1"/>
+    <circle cx="114" cy="92" r="8" fill="#F0EDEA" stroke="#DDD9D3" stroke-width="1"/>
+    <rect x="109" y="78" width="5" height="16" rx="2.5" fill="#A09890"/>
+    <circle cx="111.5" cy="74" r="5" fill="#B8B0A8"/>
+    <path d="M76 124 L80 136 L84 124" fill="#E8941A"/>
+    <defs><linearGradient id="cg" x1="80" y1="45" x2="80" y2="125"><stop offset="0%" stop-color="#FFD76E"/><stop offset="100%" stop-color="#F5A623"/></linearGradient></defs>
+  </svg>
+  <h2 class="cta-title">å£°ã§ããã£ã¨èªç±ã«ã</h2>
+  <p class="cta-desc">ä»ããBuzz Voiceãå§ãã¦ãã¿ã¤ãã³ã°ããè§£æ¾ãããæ°ããã¯ã¼ã¯ã¹ã¿ã¤ã«ãä½é¨ãã¦ãã ããã</p>
+  <div class="cta-actions">
+    <a href="#pricing" class="btn-primary">ç¡æã§å§ãã <span class="arrow">â</span></a>
+    <div class="cta-note">
+      <div class="cta-note-icon"><span></span><span></span><span></span></div>
+      ã¯ã¬ã¸ããã«ã¼ãä¸è¦
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <svg width="36" height="36" viewBox="0 0 40 40" fill="none">
+          <ellipse cx="20" cy="18" rx="11" ry="12" fill="#F5A623"/>
+          <rect x="14" y="20" width="12" height="2.5" rx="1.25" fill="#E8941A" opacity="0.4"/>
+          <circle cx="20" cy="10" r="7" fill="#FAF8F4" stroke="#E0DDD8" stroke-width="0.8"/>
+          <ellipse cx="17" cy="10" rx="1.8" ry="2.2" fill="#1a1a19"/>
+          <ellipse cx="23" cy="10" rx="1.8" ry="2.2" fill="#1a1a19"/>
+          <path d="M18 14 Q20 16.5 22 14" stroke="#1a1a19" stroke-width="1" fill="none" stroke-linecap="round"/>
+        </svg>
+   ÂöFcà¢Ç6Æ73Ò&fö÷FW"Ö'&æBÖFW62#ä%U¥¢ÔTD8ÎhùKé¾88(´û>Z;XZ^X©¾8+^8;Î89>8+8.8.8®8þ8îZ;8).88*þ8:®8*.8®88n8*Þ8+888¾ZH88î88#Â÷à¢ÂöFcà¢ÆFb6Æ73Ò&fö÷FW"Ö6öÂ#à¢ÆFb6Æ73Ò&fö÷FW"Ö6öÂ×FFÆR#î89~8:Þ888*þ88ÂöFcà¢Æ&VcÒ"6fVGW&W2#îx[ëCÂöà¢Æ&VcÒ"7&6ær#îiiyÂöà¢Æ&VcÒ"6f#ädÂöà¢ÂöFcà¢ÆFb6Æ73Ò&fö÷FW"Ö6öÂ#à¢ÆFb6Æ73Ò&fö÷FW"Ö6öÂ×FFÆR#îKÉ®zKîh8^ZÂöFcà¢Æ&VcÒ"2#ä%U¥¢ÔTD8¾8N8N8cÂöà¢Æ&VcÒ"2#î89n8:Þ8+Âöà¢Æ&VcÒ"2#î8®YZ®8NY8(þ8³Âöà¢ÂöFcà¢ÆFb6Æ73Ò&fö÷FW"Ö6öÂ#à¢ÆFb6Æ73Ò&fö÷FW"Ö6öÂ×FFÆR#îk9^y¨Nh8^ZÂöFcà¢Æ&VcÒ'FW&×2æFÖÂ#îXyJhþ{HCÂöà¢Æ&VcÒ'&f7æFÖÂ#î89~8:8*N898+~8;Î89Þ8:®8+~8;ÃÂöà¢Æ&VcÒ'Fö·W6öòæFÖÂ#îxZé®YXnXùn[É^k9^8¾Yû®8^8þÂöà¢ÂöFcà¢ÂöFcà¢ÆFb6Æ73Ò&fö÷FW"Ö&÷GFöÒ#à¢Ç7â6Æ73Ò&fö÷FW"Ö6÷#âf6÷²##b%U¥¢ÔTDæ2âÆÂ&vG2&W6W'fVBãÂ÷7ãà¢Ç7â6Æ73Ò&fö÷FW"×÷vW&VB#å÷vW&VB'Ç7G&öæsä'W§¢fö6SÂ÷7G&öæsãÂ÷7ãà¢ÂöFcà£Âöfö÷FW#à £Ç67&Cà¦6öç7BVFW"ÒFö7VÖVçBævWDVÆVÖVçD'BvVFW"r°§væF÷ræFDWfVçDÆ7FVæW"w67&öÆÂrÂÓâ²VFW"æ6Æ74Æ7BçFövvÆRw67&öÆÆVBrÂvæF÷rç67&öÆÅâ²Ò°¦Fö7VÖVçBçVW'6VÆV7F÷$ÆÂræf×VW7Föâræf÷$V6'FâÓâ°¢'FâæFDWfVçDÆ7FVæW"v6Æ6²rÂÓâ°¢6öç7BFVÒÒ'Fâç&VçDVÆVÖVçC°¢6öç7Bv47FfRÒFVÒæ6Æ74Æ7Bæ6öçFç2v7FfRr°¢Fö7VÖVçBçVW'6VÆV7F÷$ÆÂræfÖFVÒræf÷$V6Óâæ6Æ74Æ7Bç&VÖ÷fRv7FfRr°¢bv47FfRFVÒæ6Æ74Æ7BæFBv7FfRr°¢Ò°§Ò°¦6öç7Bö'2ÒæWrçFW'6V7Föäö'6W'fW"VçG&W2Óâ°¢VçG&W2æf÷$V6RÓâ²bRæ4çFW'6V7Fær²RçF&vWBç7GÆRæ÷6GÒss²RçF&vWBç7GÆRçG&ç6f÷&ÓÒwG&ç6ÆFUs²×Ò°§ÒÂ²F&W6öÆC¢ãÒ°¦Fö7VÖVçBçVW'6VÆV7F÷$ÆÂræfVGW&RÖ6&BÂç7FWÖFVÒÂç&6RÖ6&BÂæfÖFVÒÂæfVGW&R×&÷rræf÷$V6VÂÓâ°¢VÂç7GÆRæ÷6GÒss²VÂç7GÆRçG&ç6f÷&ÓÒwG&ç6ÆFU#s²VÂç7GÆRçG&ç6FöãÒv÷6GãW2V6RÂG&ç6f÷&ÒãW2V6Rs°¢ö'2æö'6W'fRVÂ°§Ò°¦Fö7VÖVçBçVW'6VÆV7F÷$ÆÂv¶&VeãÒ"2%Òræf÷$V6Óâ°¢æFDWfVçDÆ7FVæW"v6Æ6²rÂRÓâ²Rç&WfVçDFVfVÇB²6öç7BCÖFö7VÖVçBçVW'6VÆV7F÷"ævWDGG&'WFRv&Vbr²bBBç67&öÆÄçFõfWr¶&Vf÷#¢w6Öö÷FrÆ&Æö6³¢w7F'BwÒ²Ò°§Ò°£Â÷67&Cà£Âö&öGà£ÂöFÖÃà 
