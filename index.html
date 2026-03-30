@@ -1,1 +1,1647 @@
-test
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buzz Voice | AI音声入力サービス | BUZZ MEDIA</title>
+  <meta name="description" content="Buzz Voiceは、AIが音声をリアルタイムで高精度にテキスト化する次世代の音声入力サービス。99.2%の認識精度、50msのレイテンシ、30以上の言語対応。">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    :root {
+      --background: oklch(1 0 0);
+      --foreground: oklch(0.25 0.02 250);
+      --primary: oklch(0.82 0.16 80);
+      --primary-foreground: oklch(0.20 0.02 65);
+      --secondary: oklch(0.96 0.02 230);
+      --accent: oklch(0.96 0.02 230);
+      --muted: oklch(0.97 0.01 230);
+      --border: oklch(0.93 0.01 230);
+      --radius: 0.75rem;
+      --h1-color: oklch(0.35 0.02 250);
+      --bg-ice: oklch(0.96 0.02 230);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "DM Sans", sans-serif;
+      color: var(--foreground);
+      background-color: var(--background);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .jp-font {
+      font-family: "Noto Sans JP", sans-serif;
+    }
+
+    /* HEADER */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background-color: transparent;
+      backdrop-filter: blur(0px);
+      z-index: 100;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid transparent;
+    }
+
+    header.scrolled {
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom-color: var(--border);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--foreground);
+      text-decoration: none;
+      z-index: 10;
+    }
+
+    .logo-bee {
+      width: 32px;
+      height: 32px;
+      display: block;
+    }
+
+    .logo-waves {
+      display: flex;
+      gap: 3px;
+      margin-left: 8px;
+    }
+
+    .logo-waves span {
+      width: 2px;
+      height: 12px;
+      background-color: var(--primary);
+      border-radius: 2px;
+      animation: wave 0.8s ease-in-out infinite;
+    }
+
+    .logo-waves span:nth-child(2) {
+      animation-delay: 0.1s;
+    }
+
+    .logo-waves span:nth-child(3) {
+      animation-delay: 0.2s;
+    }
+
+    @keyframes wave {
+      0%, 100% { height: 8px; }
+      50% { height: 16px; }
+    }
+
+    .header-nav {
+      display: flex;
+      gap: 40px;
+      flex: 1;
+      margin-left: 80px;
+    }
+
+    .header-nav a {
+      color: var(--foreground);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .header-nav a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .header-nav a:hover::after {
+      width: 100%;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-left: auto;
+    }
+
+    .btn-login {
+      color: var(--foreground);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 16px;
+      transition: color 0.3s ease;
+    }
+
+    .btn-login:hover {
+      color: var(--primary);
+    }
+
+    .btn-cta {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 24px;
+      border-radius: var(--radius);
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .btn-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(210, 180, 35, 0.2);
+    }
+
+    /* HERO SECTION */
+    .hero {
+      min-height: 100vh;
+      padding: 120px 40px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      margin-top: 64px;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background-color: var(--bg-ice);
+      color: var(--foreground);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      width: fit-content;
+      opacity: 0;
+      animation: slideUp 0.6s ease 0.1s forwards;
+    }
+
+    .hero-badge svg {
+      width: 14px;
+      height: 14px;
+      color: var(--primary);
+    }
+
+    .hero-title {
+      font-size: 56px;
+      font-weight: 900;
+      line-height: 1.2;
+      color: var(--h1-color);
+      opacity: 0;
+      animation: slideUp 0.6s ease 0.2s forwards;
+      letter-spacing: -1px;
+    }
+
+    .hero-underline {
+      width: 80px;
+      height: 6px;
+      background-color: var(--primary);
+      border-radius: 3px;
+      opacity: 0;
+      animation: slideUp 0.6s ease 0.2s forwards;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--foreground);
+      opacity: 0;
+      animation: slideUp 0.6s ease 0.3s forwards;
+      max-width: 500px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      opacity: 0;
+      animation: slideUp 0.6s ease 0.4s forwards;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      padding: 14px 32px;
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(210, 180, 35, 0.25);
+    }
+
+    .btn-primary .arrow {
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+
+    .btn-primary:hover .arrow {
+      transform: translateX(4px);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--foreground);
+      padding: 14px 32px;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--foreground);
+      background-color: var(--background);
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 48px;
+      opacity: 0;
+      animation: slideUp 0.6s ease 0.5s forwards;
+      margin-top: 24px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stat-value {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--foreground);
+      opacity: 0.7;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    /* Hero Visual */
+    .hero-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      opacity: 0;
+      animation: slideUp 0.6s ease 0.3s forwards;
+    }
+
+    .hero-illustration {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .audio-bars {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 280px;
+      height: 40px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      gap: 4px;
+      opacity: 0.6;
+    }
+
+    .audio-bars span {
+      width: 4px;
+      background: linear-gradient(to top, var(--primary), var(--primary));
+      border-radius: 2px;
+      animation: audioBar 0.6s ease-in-out infinite;
+    }
+
+    .audio-bars span:nth-child(1) { height: 12px; animation-delay: 0s; }
+    .audio-bars span:nth-child(2) { height: 20px; animation-delay: 0.1s; }
+    .audio-bars span:nth-child(3) { height: 16px; animation-delay: 0.2s; }
+    .audio-bars span:nth-child(4) { height: 24px; animation-delay: 0.3s; }
+    .audio-bars span:nth-child(5) { height: 20px; animation-delay: 0.4s; }
+    .audio-bars span:nth-child(6) { height: 28px; animation-delay: 0.5s; }
+    .audio-bars span:nth-child(7) { height: 18px; animation-delay: 0.6s; }
+    .audio-bars span:nth-child(8) { height: 22px; animation-delay: 0.7s; }
+    .audio-bars span:nth-child(9) { height: 14px; animation-delay: 0.8s; }
+
+    @keyframes audioBar {
+      0%, 100% { height: 8px; }
+      50% { height: 28px; }
+    }
+
+    .mascot-container {
+      width: 340px;
+      height: 340px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mascot-svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 20px 60px rgba(0, 0, 0, 0.08));
+    }
+
+    .app-preview {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+      width: 320px;
+      animation: slideUp 0.6s ease 0.6s both;
+    }
+
+    .app-preview-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--primary);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .app-preview-text {
+      font-size: 13px;
+      color: var(--foreground);
+      white-space: nowrap;
+      flex: 1;
+    }
+
+    .app-preview-text strong {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .app-preview-waves {
+      display: flex;
+      gap: 2px;
+      align-items: center;
+      height: 16px;
+    }
+
+    .app-preview-waves span {
+      width: 2px;
+      background-color: var(--primary);
+      border-radius: 1px;
+      animation: waveAnim 0.6s ease-in-out infinite;
+    }
+
+    .app-preview-waves span:nth-child(1) {
+      height: 4px;
+      animation-delay: 0s;
+    }
+    .app-preview-waves span:nth-child(2) {
+      height: 8px;
+      animation-delay: 0.1s;
+    }
+    .app-preview-waves span:nth-child(3) {
+      height: 4px;
+      animation-delay: 0.2s;
+    }
+
+    @keyframes waveAnim {
+      0%, 100% { height: 4px; }
+      50% { height: 12px; }
+    }
+
+    .app-preview-time {
+      font-size: 12px;
+      color: var(--foreground);
+      opacity: 0.7;
+      font-weight: 500;
+      min-width: 30px;
+    }
+
+    .app-preview-rec {
+      width: 8px;
+      height: 8px;
+      background-color: #ef4444;
+      border-radius: 50%;
+      animation: blink 1s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* FEATURES SECTION */
+    .section {
+      padding: 80px 40px;
+    }
+
+    .section-center {
+      max-width: 1280px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 42px;
+      font-weight: 900;
+      color: var(--h1-color);
+      margin-bottom: 16px;
+      line-height: 1.2;
+      letter-spacing: -1px;
+    }
+
+    .section-subtitle {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--foreground);
+      opacity: 0.7;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--foreground);
+      opacity: 0.8;
+      margin-bottom: 48px;
+      line-height: 1.8;
+    }
+
+    /* Features Grid Cards */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 48px;
+    }
+
+    .feature-card {
+      background-color: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .feature-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 12px 32px rgba(210, 180, 35, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      background-color: var(--bg-ice);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+
+    .feature-icon svg {
+      width: 24px;
+      height: 24px;
+      color: var(--primary);
+    }
+
+    .feature-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--foreground);
+      margin-bottom: 12px;
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      color: var(--foreground);
+      opacity: 0.75;
+      line-height: 1.7;
+    }
+
+    /* Features Detail Section */
+    .features-detail {
+      background-color: transparent;
+      position: relative;
+    }
+
+    .features-detail .section-center {
+      max-width: 1000px;
+    }
+
+    .feature-row {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 60px;
+      align-items: center;
+      margin-bottom: 80px;
+    }
+
+    .feature-row.reverse {
+      direction: rtl;
+    }
+
+    .feature-row.reverse > * {
+      direction: ltr;
+    }
+
+    .feature-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, var(--bg-ice) 0%, rgba(225, 239, 251, 0.5) 100%);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .feature-img svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .feature-row-content {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .feature-row-icon {
+      font-size: 32px;
+      display: block;
+      width: fit-content;
+    }
+
+    .feature-row-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--h1-color);
+      line-height: 1.2;
+    }
+
+    .feature-row-desc {
+      font-size: 16px;
+      color: var(--foreground);
+      opacity: 0.8;
+      line-height: 1.8;
+      max-width: 500px;
+    }
+
+    /* HOW IT WORKS SECTION */
+    .howto-section {
+      background-color: var(--bg-ice);
+      padding: 80px 40px;
+    }
+
+    .howto-inner {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .steps-list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      margin-top: 60px;
+    }
+
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .step-num {
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .step-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--foreground);
+    }
+
+    .step-desc {
+      font-size: 14px;
+      color: var(--foreground);
+      opacity: 0.75;
+      line-height: 1.7;
+    }
+
+    /* PRICING SECTION */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 48px;
+    }
+
+    .price-card {
+      background-color: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px 32px;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      position: relative;
+    }
+
+    .price-card.popular {
+      border-color: var(--primary);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(230, 230, 230, 0.03) 100%);
+      box-shadow: 0 20px 40px rgba(210, 180, 35, 0.15);
+      transform: scale(1.05);
+    }
+
+    .price-card.popular::before {
+      content: 'おすすめ';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      padding: 4px 16px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .price-name {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--foreground);
+    }
+
+    .price-sub {
+      font-size: 13px;
+      color: var(--foreground);
+      opacity: 0.7;
+      font-weight: 500;
+    }
+
+    .price-amount {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin: 12px 0;
+    }
+
+    .price-currency {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--foreground);
+    }
+
+    .price-value {
+      font-size: 42px;
+      font-weight: 900;
+      color: var(--primary);
+    }
+
+    .price-period {
+      font-size: 14px;
+      color: var(--foreground);
+      opacity: 0.75;
+      font-weight: 500;
+    }
+
+    .price-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .price-features li {
+      font-size: 14px;
+      color: var(--foreground);
+      padding-left: 28px;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .price-features li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .check-gray::before {
+      color: var(--foreground);
+      opacity: 0.4;
+    }
+
+    .check-orange::before {
+      color: var(--primary);
+    }
+
+    .check-muted::before {
+      color: var(--foreground);
+      opacity: 0.5;
+    }
+
+    .btn-price {
+      padding: 12px 24px;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 15px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: block;
+      text-align: center;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-price-primary {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+    }
+
+    .btn-price-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(210, 180, 35, 0.2);
+    }
+
+    .btn-price-outline {
+      background-color: transparent;
+      color: var(--foreground);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-price-outline:hover {
+      border-color: var(--foreground);
+    }
+
+    .btn-price-dark {
+      background-color: var(--foreground);
+      color: white;
+    }
+
+    .btn-price-dark:hover {
+      opacity: 0.9;
+    }
+
+    /* FAQ SECTION */
+    .faq-section {
+      background-color: var(--bg-ice);
+      padding: 80px 40px;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      transition: all 0.3s ease;
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+
+    .faq-question {
+      width: 100%;
+      padding: 24px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--foreground);
+      text-align: left;
+      transition: color 0.3s ease;
+    }
+
+    .faq-question:hover {
+      color: var(--primary);
+    }
+
+    .faq-chevron {
+      width: 20px;
+      height: 20px;
+      color: var(--primary);
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .faq-item.active .faq-chevron {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 500px;
+    }
+
+    .faq-answer-inner {
+      padding-bottom: 24px;
+      font-size: 15px;
+      color: var(--foreground);
+      opacity: 0.8;
+      line-height: 1.8;
+    }
+
+    /* CTA SECTION */
+    .cta-section {
+      padding: 100px 40px;
+      background: linear-gradient(135deg, var(--bg-ice) 0%, rgba(230, 230, 230, 0.03) 100%);
+      text-align: center;
+    }
+
+    .cta-inner {
+      max-width: 700px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .cta-title {
+      font-size: 44px;
+      font-weight: 900;
+      color: var(--h1-color);
+      line-height: 1.2;
+      letter-spacing: -1px;
+    }
+
+    .cta-desc {
+      font-size: 16px;
+      color: var(--foreground);
+      opacity: 0.8;
+      line-height: 1.8;
+    }
+
+    .cta-button {
+      background-color: var(--primary);
+      color: var(--primary-foreground);
+      padding: 14px 32px;
+      border-radius: var(--radius);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(210, 180, 35, 0.25);
+    }
+
+    .cta-note {
+      font-size: 13px;
+      color: var(--foreground);
+      opacity: 0.6;
+      margin-top: 12px;
+      font-weight: 500;
+    }
+
+    /* FOOTER */
+    footer {
+      background-color: var(--foreground);
+      color: white;
+      padding: 60px 40px;
+    }
+
+    .footer-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .footer-logo-bee {
+      width: 24px;
+      height: 24px;
+    }
+
+    .footer-desc {
+      font-size: 14px;
+      opacity: 0.8;
+      line-height: 1.6;
+      max-width: 300px;
+    }
+
+    .footer-column h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      opacity: 0.95;
+    }
+
+    .footer-column ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .footer-column a {
+      font-size: 14px;
+      opacity: 0.8;
+      text-decoration: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .footer-column a:hover {
+      opacity: 1;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copyright {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    /* Animations */
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 120px 24px 60px;
+      }
+
+      .header-nav {
+        margin-left: 40px;
+        gap: 24px;
+      }
+
+      .pricing-grid,
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .price-card.popular {
+        transform: scale(1);
+      }
+
+      .feature-row,
+      .feature-row.reverse {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .steps-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero-title {
+        font-size: 40px;
+      }
+
+      .section-title {
+        font-size: 32px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 0 16px;
+      }
+
+      .header-nav {
+        display: none;
+      }
+
+      .hero {
+        padding: 100px 16px 40px;
+      }
+
+      .hero-title {
+        font-size: 32px;
+      }
+
+      .hero-stats {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .section {
+        padding: 60px 16px;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .steps-list {
+        grid-template-columns: 1fr;
+      }
+
+      .mascot-container {
+        width: 240px;
+        height: 240px;
+      }
+
+      .app-preview {
+        width: 280px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 24px;
+      }
+
+      .section-title {
+        font-size: 24px;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+      }
+
+      .cta-title {
+        font-size: 28px;
+      }
+
+      .mascot-container {
+        width: 180px;
+        height: 180px;
+      }
+    }
+  </style>
+</head>
+<body class="jp-font">
+  <!-- HEADER -->
+  <header id="header">
+    <a href="#" class="logo">
+      <svg class="logo-bee" viewBox="0 0 40 40" fill="none">
+        <ellipse cx="20" cy="18" rx="11" ry="12" fill="#F5A623"/>
+        <ellipse cx="20" cy="18" rx="11" ry="12" fill="url(#hg)" opacity="0.5"/>
+        <rect x="14" y="20" width="12" height="2.5" rx="1.25" fill="#E8941A" opacity="0.4"/>
+        <rect x="15" y="24" width="10" height="2" rx="1" fill="#E8941A" opacity="0.3"/>
+        <circle cx="20" cy="10" r="7" fill="#FAF8F4" stroke="#E0DDD8" stroke-width="0.8"/>
+        <ellipse cx="17" cy="10" rx="1.8" ry="2.2" fill="#1a1a19"/>
+        <ellipse cx="23" cy="10" rx="1.8" ry="2.2" fill="#1a1a19"/>
+        <circle cx="17.8" cy="9" r="0.7" fill="#fff"/>
+        <circle cx="23.8" cy="9" r="0.7" fill="#fff"/>
+        <path d="M18 14 Q20 16.5 22 14" stroke="#1a1a19" stroke-width="1" fill="none" stroke-linecap="round"/>
+        <line x1="17" y1="4" x2="15" y2="1" stroke="#8C8880" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="23" y1="4" x2="25" y2="1" stroke="#8C8880" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="15" cy="0.8" r="1.5" fill="#F5A623"/>
+        <circle cx="25" cy="0.8" r="1.5" fill="#F5A623"/>
+        <ellipse cx="9" cy="16" rx="5" ry="7" fill="#F5A623" opacity="0.1" transform="rotate(-12 9 16)"/>
+        <ellipse cx="31" cy="16" rx="5" ry="7" fill="#F5A623" opacity="0.1" transform="rotate(12 31 16)"/>
+        <path d="M18 29 L20 34 L22 29" fill="#E8941A" opacity="0.5"/>
+        <defs><linearGradient id="hg" x1="20" y1="6" x2="20" y2="30"><stop offset="0%" stop-color="#FFD76E"/><stop offset="100%" stop-color="#F5A623"/></linearGradient></defs>
+      </svg>
+      <span>Buzz Voice</span>
+    </a>
+    <nav class="header-nav">
+      <a href="#features">特徴</a>
+      <a href="#how-it-works">使い方</a>
+      <a href="#pricing">料金</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="header-right">
+      <a href="#" class="btn-login">ログイン</a>
+      <a href="#pricing" class="btn-cta">無料で始める</a>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2a3 3 0 00-3 3v6a3 3 0 006 0V5a3 3 0 00-3-3z"/>
+          <path d="M19 10v1a7 7 0 01-14 0v-1"/>
+          <line x1="12" y1="18" x2="12" y2="22"/>
+        </svg>
+        BUZZ MEDIA PRESENTS
+      </div>
+      <h1 class="hero-title">話すだけで、<br>テキストになる。</h1>
+      <div class="hero-underline"></div>
+      <p class="hero-desc">Buzz Voiceは、AIが音声をリアルタイムで高精度にテキスト化する次世代の音声入力サービスです。自然に話すだけで、あなたの言葉がクリアな文章に変わります。</p>
+      <div class="hero-actions">
+        <a href="#pricing" class="btn-primary">無料で始める <span class="arrow">→</span></a>
+        <a href="#features" class="btn-secondary">詳しく見る</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-value">99.2%</span>
+          <span class="stat-label">認識精度</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">50ms</span>
+          <span class="stat-label">レイテンシ</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-value">30+</span>
+          <span class="stat-label">対応言語</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-illustration">
+        <div class="audio-bars"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+        <div class="mascot-container">
+          <svg class="mascot-svg" viewBox="0 0 400 400" fill="none">
+            <ellipse cx="200" cy="210" rx="80" ry="90" fill="#F5A623"/>
+            <ellipse cx="200" cy="210" rx="80" ry="90" fill="url(#mb)" opacity="0.45"/>
+            <rect x="132" y="230" width="136" height="14" rx="7" fill="#E8941A" opacity="0.35"/>
+            <rect x="138" y="250" width="124" height="12" rx="6" fill="#E8941A" opacity="0.3"/>
+            <rect x="146" y="268" width="108" height="10" rx="5" fill="#E8941A" opacity="0.25"/>
+            <circle cx="200" cy="135" r="60" fill="#F0EDEA"/>
+            <circle cx="200" cy="135" r="56" fill="#FAF8F4" stroke="#DDD9D3" stroke-width="1.5"/>
+            <ellipse cx="180" cy="130" rx="14" ry="17" fill="#1a1a19"/>
+            <ellipse cx="220" cy="130" rx="14" ry="17" fill="#1a1a19"/>
+            <circle cx="184" cy="124" r="5" fill="#fff"/>
+            <circle cx="224" cy="124" r="5" fill="#fff"/>
+            <circle cx="178" cy="132" r="2" fill="#fff" opacity="0.5"/>
+            <circle cx="218" cy="132" r="2" fill="#fff" opacity="0.5"/>
+            <path d="M186 155 Q200 168 214 155" stroke="#1a1a19" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <line x1="178" y1="78" x2="165" y2="48" stroke="#8C8880" stroke-width="3" stroke-linecap="round"/>
+            <line x1="222" y1="78" x2="235" y2="48" stroke="#8C8880" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="165" cy="45" r="7" fill="#F5A623"/><circle cx="235" cy="45" r="7" fill="#F5A623"/>
+            <circle cx="165" cy="45" r="3.5" fill="#FFD76E"/><circle cx="235" cy="45" r="3.5" fill="#FFD76E"/>
+            <ellipse cx="108" cy="175" rx="42" ry="58" fill="#F5A623" opacity="0.1" transform="rotate(-12 108 175)"/>
+            <ellipse cx="108" cy="175" rx="38" ry="52" fill="none" stroke="#F5A623" stroke-width="1.5" opacity="0.18" transform="rotate(-12 108 175)"/>
+            <ellipse cx="292" cy="175" rx="42" ry="58" fill="#F5A623" opacity="0.1" transform="rotate(12 292 175)"/>
+            <ellipse cx="292" cy="175" rx="38" ry="52" fill="none" stroke="#F5A623" stroke-width="1.5" opacity="0.18" transform="rotate(12 292 175)"/>
+            <circle cx="112" cy="225" r="16" fill="#F0EDEA" stroke="#DDD9D3" stroke-width="1.5"/>
+            <circle cx="288" cy="225" r="16" fill="#F0EDEA" stroke="#DDD9D3" stroke-width="1.5"/>
+            <rect x="278" y="194" width="10" height="32" rx="5" fill="#A09890"/>
+            <circle cx="283" cy="188" r="10" fill="#B8B0A8" stroke="#A09890" stroke-width="1.5"/>
+            <circle cx="283" cy="188" r="7" fill="none" stroke="#C8C0B8" stroke-width="0.8" stroke-dasharray="2.5 2.5"/>
+            <path d="M300 182 Q312 182 312 190" stroke="#F5A623" stroke-width="2" fill="none" opacity="0.4" stroke-linecap="round"/>
+            <path d="M305 174 Q322 176 320 194" stroke="#F5A623" stroke-width="1.5" fill="none" opacity="0.25" stroke-linecap="round"/>
+            <path d="M190 298 L200 320 L210 298" fill="#E8941A"/>
+            <ellipse cx="175" cy="306" rx="18" ry="9" fill="#F0EDEA" stroke="#DDD9D3" stroke-width="1.5"/>
+            <ellipse cx="225" cy="306" rx="18" ry="9" fill="#F0EDEA" stroke="#DDD9D3" stroke-width="1.5"/>
+            <defs><linearGradient id="mb" x1="200" y1="120" x2="200" y2="300"><stop offset="0%" stop-color="#FFD76E"/><stop offset="100%" stop-color="#F5A623"/></linearGradient></defs>
+          </svg>
+        </div>
+        <div class="app-preview">
+          <div class="app-preview-dot"></div>
+          <span class="app-preview-text">Dictating with <strong>Buzz Voice</strong></span>
+          <div class="app-preview-waves"><span></span><span></span><span></span></div>
+          <span class="app-preview-time">0:05</span>
+          <div class="app-preview-rec"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION -->
+  <section class="section section-center" id="features">
+    <div class="section-label">FEATURES</div>
+    <div class="section-title">声を、力に変える</div>
+    <div class="section-subtitle jp-font" style="margin-bottom: 56px;">テクノロジー</div>
+
+    <div class="feature-row">
+      <div class="feature-img">
+        <svg viewBox="0 0 200 150" fill="none"><rect x="30" y="20" width="140" height="110" rx="8" fill="#d4ecfb" opacity="0.5"/><rect x="50" y="50" width="100" height="6" rx="3" fill="#5bb8f5" opacity="0.3"/><rect x="50" y="64" width="80" height="6" rx="3" fill="#5bb8f5" opacity="0.2"/><rect x="50" y="78" width="90" height="6" rx="3" fill="#5bb8f5" opacity="0.25"/><circle cx="100" cy="105" r="16" fill="none" stroke="#5bb8f5" stroke-width="2" opacity="0.4"/><path d="M95 102v-10a5 5 0 0110 0v10" stroke="#5bb8f5" stroke-width="2" fill="none"/><path d="M92 102a8 8 0 0016 0" stroke="#5bb8f5" stroke-width="1.5" fill="none"/></svg>
+      </div>
+      <div class="feature-row-content">
+        <div class="feature-row-icon">🎙️</div>
+        <div class="feature-row-title">リアルタイム文字起こし</div>
+        <div class="feature-row-desc">話した言葉が瞬時にテキストに変換されます。50ms以下の超低レイテンシで、自然な会話のスピードに追従します。</div>
+      </div>
+    </div>
+
+    <div class="feature-row reverse">
+      <div class="feature-img">
+        <svg viewBox="0 0 200 150" fill="none"><circle cx="100" cy="75" r="50" fill="#d4ecfb" opacity="0.3"/><circle cx="100" cy="75" r="35" fill="none" stroke="#5bb8f5" stroke-width="2" opacity="0.4"/><text x="76" y="84" font-size="28" font-weight="900" fill="#5bb8f5" opacity="0.5">99%</text><rect x="40" y="115" width="120" height="4" rx="2" fill="#5bb8f5" opacity="0.2"/><rect x="40" y="115" width="108" height="4" rx="2" fill="#5bb8f5" opacity="0.35"/></svg>
+      </div>
+      <div class="feature-row-content">
+        <div class="feature-row-icon">🎯</div>
+        <div class="feature-row-title">99.2%の認識精度</div>
+        <div class="feature-row-desc">業界トップクラスの認識精度を実現。ノイズの多い環境でも高い精度を維持し、修正の手間を大幅に削減します。</div>
+      </div>
+    </div>
+
+    <div class="feature-row">
+      <div class="feature-img">
+        <svg viewBox="0 0 200 150" fill="none"><rect x="50" y="30" width="100" height="70" rx="8" fill="#d4ecfb" opacity="0.3"/><circle cx="80" cy="65" r="4" fill="#5bb8f5" opacity="0.5"/><circle cx="100" cy="55" r="4" fill="#5bb8f5" opacity="0.5"/><circle cx="120" cy="65" r="4" fill="#5bb8f5" opacity="0.5"/><line x1="80" y1="65" x2="100" y2="55" stroke="#5bb8f5" stroke-width="1.5" opacity="0.3"/><line x1="100" y1="55" x2="120" y2="65" stroke="#5bb8f5" stroke-width="1.5" opacity="0.3"/><rect x="60" y="112" width="80" height="6" rx="3" fill="#5bb8f5" opacity="0.2"/><rect x="70" y="124" width="60" height="6" rx="3" fill="#5bb8f5" opacity="0.15"/></svg>
+      </div>
+      <div class="feature-row-content">
+        <div class="feature-row-icon">🧠</div>
+        <div class="feature-row-title">AI文脈理解</div>
+        <div class="feature-row-desc">最新のAIモデルが文脈を理解し、専門用語や固有名詞も正確に認識。話し言葉を自然な書き言葉に自動変換します。</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 80px;">
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+          <div class="feature-title">あらゆるアプリに対応</div>
+          <div class="feature-desc">メール、チャット、ドキュメント、コードエディタなど、すべてのテキスト入力フィールドで利用可能。</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div>
+          <div class="feature-title">30以上の言語に対応</div>
+          <div class="feature-desc">日本語はもちろん、英語、中国語など30以上の言語をサポート。多言語環境でもシームレスに利用できます。</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <div class="feature-title">プライバシー保護</div>
+          <div class="feature-desc">音声データは端末上で処理され、サーバーに保存されません。企業のセキュリティポリシーにも対応します。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS SECTION -->
+  <section class="howto-section" id="how-it-works">
+    <div class="howto-inner">
+      <div class="section-label">HOW IT WORKS</div>
+      <div class="section-title">4つのステップで始める</div>
+      <p class="section-desc">セットアップは驚くほど簡単。数分で音声入力の世界が広がります。</p>
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-num jp-font">01</div>
+          <div class="step-content">
+            <div class="step-title jp-font">アプリをインストール</div>
+            <div class="step-desc">Mac、Windows、iOSに対応。ダウンロードしてアカウントを作成するだけで、すぐに使い始められます。</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num jp-font">02</div>
+          <div class="step-content">
+            <div class="step-title jp-font">マイクに向かって話す</div>
+            <div class="step-desc">テキスト入力したい場所にカーソルを置き、ショートカットキーを押して話し始めるだけ。特別な操作は不要です。</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num jp-font">03</div>
+          <div class="step-content">
+            <div class="step-title jp-font">AIがテキストに変換</div>
+            <div class="step-desc">あなたの声をAIがリアルタイムで解析し、文脈を理解した上で自然な文章に変換。句読点も自動で挿入されます。</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num jp-font">04</div>
+          <div class="step-content">
+            <div class="step-title jp-font">編集・活用する</div>
+            <div class="step-desc">変換されたテキストはそのまま使えるクオリティ。必要に応じて音声コマンドで編集や修正も可能です。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING SECTION -->
+  <section class="section section-center" id="pricing">
+    <div class="section-label">PRICING</div>
+    <div class="section-title">シンプルな料金プラン</div>
+    <p class="section-desc">無料プランから始めて、必要に応じてアップグレード。<br>すべてのプランに14日間の無料トライアル付き。</p>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="price-name jp-font">Free</div>
+        <div class="price-sub jp-font">まずは試してみたい方に</div>
+        <div class="price-amount"><span class="price-currency">¥</span><span class="price-value">0</span></div>
+        <div class="price-period jp-font">永久無料</div>
+        <ul class="price-features">
+          <li class="check-gray jp-font">月60分の音声入力</li>
+          <li class="check-gray jp-font">基本的な文字起こし</li>
+          <li class="check-gray jp-font">日本語・英語対応</li>
+          <li class="check-gray jp-font">デスクトップアプリ</li>
+        </ul>
+        <a href="#" class="btn-price btn-price-outline">無料で始める</a>
+      </div>
+      <div class="price-card popular">
+        <div class="price-name jp-font">Pro</div>
+        <div class="price-sub jp-font">個人でフル活用したい方に</div>
+        <div class="price-amount"><span class="price-currency">¥</span><span class="price-value">1,500</span></div>
+        <div class="price-period jp-font">/月</div>
+        <ul class="price-features">
+          <li class="check-orange jp-font">無制限の音声入力</li>
+          <li class="check-orange jp-font">AI文脈理解・自動修正</li>
+          <li class="check-orange jp-font">30以上の言語対応</li>
+          <li class="check-orange jp-font">カスタム辞書登録</li>
+          <li class="check-orange jp-font">音声コマンド編集</li>
+          <li class="check-orange jp-font">優先サポート</li>
+        </ul>
+        <a href="#" class="btn-price btn-price-primary">Proを始める</a>
+      </div>
+      <div class="price-card">
+        <div class="price-name jp-font">Enterprise</div>
+        <div class="price-sub jp-font">チーム・法人でのご利用に</div>
+        <div class="price-amount"><span style="font-size:32px;font-weight:900;letter-spacing:-1px;">お問い合わせ</span></div>
+        <div class="price-period">&nbsp;</div>
+        <ul class="price-features">
+          <li class="check-muted jp-font">Proの全機能</li>
+          <li class="check-muted jp-font">チーム管理ダッシュボード</li>
+          <li class="check-muted jp-font">SSO / SAML認証</li>
+          <li class="check-muted jp-font">オンプレミス対応</li>
+          <li class="check-muted jp-font">カスタムAPI連携</li>
+          <li class="check-muted jp-font">専任サポート担当</li>
+          <li class="check-muted jp-font">SLA保証</li>
+        </ul>
+        <a href="#" class="btn-price btn-price-dark">お問い合わせ</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section class="section section-center faq-section" id="faq">
+    <div class="section-label">FAQ</div>
+    <div class="section-title">よくある質問</div>
+    <div style="height: 48px;"></div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-question jp-font">Buzz Voiceはどのデバイスで利用できますか？<svg class="faq-chevron" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg></button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">macOS（Apple Silicon / Intel）とWindowsに対応しています。iOS版も今後リリース予定です。</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question jp-font">オフラインでも使用できますか？<svg class="faq-chevron" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg></button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">基本機能はオフラインでも利用可能です。AI文脈理解や高精度認識はクラウド処理のため、インターネット接続が必要です。</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question jp-font">音声データはどのように扱われますか？<svg class="faq-chevron" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg></button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">音声データはリアルタイムで処理され、サーバーに保存されません。プライバシーを最優先に設計しています。</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question jp-font">専門用語や固有名詞は正しく認識されますか？<svg class="faq-chevron" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg></button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">カスタム辞書機能で専門用語や固有名詞を登録できます。AIが文脈から適切な用語を選択する精度も日々向上しています。</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question jp-font">無料プランから有料プランへの移行はスムーズですか？<svg class="faq-chevron" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg></button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">はい、アプリ内からワンクリックでアップグレードできます。データや設定はそのまま引き継がれます。</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question jp-font">法人での導入を検討しています。サポートはありますか？<svg class="faq-chevron" viewBox="0 0 20 20" fill="currentColor"><path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"/></svg></button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Enterpriseプランでは専任のサポート担当が導入から運用までサポートします。SSO連携やオンプレミス対応もご相談ください。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA SECTION -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <h2 class="cta-title jp-font">声で、もっと自由に。</h2>
+      <p class="cta-desc jp-font">Buzz Voiceで、音声入力の未来を体験してください。今なら14日間無料でプレミアム機能をすべて試用できます。</p>
+      <a href="#pricing" class="cta-button">無料で始める <span class="arrow">→</span></a>
+      <p class="cta-note jp-font">クレジットカード不要</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-content">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <svg class="footer-logo-bee" viewBox="0 0 40 40" fill="none">
+            <ellipse cx="20" cy="18" rx="11" ry="12" fill="#FFD76E"/>
+            <ellipse cx="20" cy="18" rx="11" ry="12" fill="url(#hgf)" opacity="0.5"/>
+            <rect x="14" y="20" width="12" height="2.5" rx="1.25" fill="#FFB82E" opacity="0.4"/>
+            <rect x="15" y="24" width="10" height="2" rx="1" fill="#FFB82E" opacity="0.3"/>
+            <circle cx="20" cy="10" r="7" fill="#FAF8F4" stroke="#E0DDD8" stroke-width="0.8"/>
+            <ellipse cx="17" cy="10" rx="1.8" ry="2.2" fill="#1a1a19"/>
+            <ellipse cx="23" cy="10" rx="1.8" ry="2.2" fill="#1a1a19"/>
+            <circle cx="17.8" cy="9" r="0.7" fill="#fff"/>
+            <circle cx="23.8" cy="9" r="0.7" fill="#fff"/>
+            <path d="M18 14 Q20 16.5 22 14" stroke="#1a1a19" stroke-width="1" fill="none" stroke-linecap="round"/>
+            <line x1="17" y1="4" x2="15" y2="1" stroke="#8C8880" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="23" y1="4" x2="25" y2="1" stroke="#8C8880" stroke-width="1.2" stroke-linecap="round"/>
+            <circle cx="15" cy="0.8" r="1.5" fill="#FFD76E"/>
+            <circle cx="25" cy="0.8" r="1.5" fill="#FFD76E"/>
+            <ellipse cx="9" cy="16" rx="5" ry="7" fill="#FFD76E" opacity="0.1" transform="rotate(-12 9 16)"/>
+            <ellipse cx="31" cy="16" rx="5" ry="7" fill="#FFD76E" opacity="0.1" transform="rotate(12 31 16)"/>
+            <path d="M18 29 L20 34 L22 29" fill="#FFB82E" opacity="0.5"/>
+            <defs><linearGradient id="hgf" x1="20" y1="6" x2="20" y2="30"><stop offset="0%" stop-color="#FFEB99"/><stop offset="100%" stop-color="#FFD76E"/></linearGradient></defs>
+          </svg>
+          <span>Buzz Voice</span>
+        </div>
+        <p class="footer-desc jp-font">AIが音声をリアルタイムで高精度にテキスト化。次世代の音声入力サービスで、仕事をもっと効率的に、もっと自由に。</p>
+      </div>
+      <div class="footer-column">
+        <h3 class="jp-font">プロダクト</h3>
+        <ul>
+          <li><a href="#" class="jp-font">特徴</a></li>
+          <li><a href="#" class="jp-font">料金</a></li>
+          <li><a href="#" class="jp-font">ダウンロード</a></li>
+          <li><a href="#" class="jp-font">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3 class="jp-font">会社情報</h3>
+        <ul>
+          <li><a href="#" class="jp-font">について</a></li>
+          <li><a href="#" class="jp-font">お問い合わせ</a></li>
+          <li><a href="#" class="jp-font">採用情報</a></li>
+          <li><a href="#" class="jp-font">プレスリリース</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h3 class="jp-font">法的情報</h3>
+        <ul>
+          <li><a href="terms.html" class="jp-font">利用規約</a></li>
+          <li><a href="privacy.html" class="jp-font">プライバシーポリシー</a></li>
+          <li><a href="tokushoho.html" class="jp-font">特定商取引法</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copyright jp-font">© 2026 BUZZ MEDIA Inc. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Header scroll effect
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // FAQ Accordion
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+      const button = item.querySelector('.faq-question');
+      button.addEventListener('click', () => {
+        const isActive = item.classList.contains('active');
+        faqItems.forEach(i => i.classList.remove('active'));
+        if (!isActive) {
+          item.classList.add('active');
+        }
+      });
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (href !== '#' && document.querySelector(href)) {
+          e.preventDefault();
+          const target = document.querySelector(href);
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
