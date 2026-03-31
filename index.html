@@ -153,8 +153,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 <script>
-function goWaitlist(){document.getElementById('waitlist').scrollIntoView({behavior:'smooth'});}
-function goFeatures(){document.getElementById('features').scrollIntoView({behavior:'smooth'});}
+function goWaitlist(){location.hash='';location.hash='#waitlist';}
+function goFeatures(){location.hash='';location.hash='#features';}
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('button').forEach(function(btn) {
     var text = btn.textContent.trim();
