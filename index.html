@@ -194,18 +194,41 @@ document.getElementById('waitlist-form').addEventListener('submit', function(e) 
   e.preventDefault();
   var email = document.getElementById('waitlist-email').value;
   var msg = document.getElementById('waitlist-msg');
+  var btn = e.target.querySelector('button[type="submit"]');
   msg.textContent = '送信中...';
   msg.className = 'text-sm text-slate-medium';
-  try {
-    var list = JSON.parse(localStorage.getItem('buzzvoice_waitlist') || '[]');
-    list.push({email: email, date: new Date().toISOString()});
-    localStorage.setItem('buzzvoice_waitlist', JSON.stringify(list));
-  } catch(ex) {}
-  setTimeout(function() {
-    msg.textContent = String.fromCodePoint(0x2705) + ' ご登録ありがとうございます！リリース時にご連絡いたします。';
-    msg.className = 'text-sm text-honey-dark font-semibold';
-    document.getElementById('waitlist-email').value = '';
-  }, 600);
+  btn.disabled = true;
+  btn.textContent = '送信中...';
+  fetch('https://formsubmit.co/ajax/representative@buzzmedia.co.jp', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+    body: JSON.stringify({
+      email: email,
+      _subject: 'BuzzVoice ウェイトリスト新規登録',
+      _template: 'table',
+      source: 'landing-page',
+      registered_at: new Date().toISOString()
+    })
+  })
+  .then(function(res) { return res.json(); })
+  .then(function(data) {
+    if (data.success === 'true' || data.success === true) {
+      msg.textContent = String.fromCodePoint(0x2705) + ' ご登録ありがとうございます！リリース時にご連絡いたします。';
+      msg.className = 'text-sm text-honey-dark font-semibold';
+      document.getElementById('waitlist-email').value = '';
+    } else {
+      msg.textContent = '送信に失敗しました。もう一度お試しください。';
+      msg.className = 'text-sm text-red-500';
+    }
+    btn.disabled = false;
+    btn.textContent = '登録する';
+  })
+  .catch(function(err) {
+    msg.textContent = '通信エラーが発生しました。もう一度お試しください。';
+    msg.className = 'text-sm text-red-500';
+    btn.disabled = false;
+    btn.textContent = '登録する';
+  });
 });
 </script>
 
