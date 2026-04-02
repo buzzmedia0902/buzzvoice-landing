@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buzz Voice - ダッシュボード</title>
+<link rel="icon" type="image/png" href="https://d2xsxph8kpxj0f.cloudfront.net/310519663042633177/JLfMoCY9kP2qtnZEqdKw7Z/buzz-media-logo_0b0f1c71.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>
+tailwind.config={theme:{extend:{colors:{honey:{DEFAULT:"#FBBF24",dark:"#B45309",light:"#FEF3C7"},ice:{DEFAULT:"#E0F2FE",deep:"#BAE6FD"},"slate-dark":"#1E293B","slate-medium":"#64748B"},fontFamily:{display:["DM Sans","Noto Sans JP","sans-serif"],sans:["Noto Sans JP","sans-serif"]}}}};
+</script>
+<style>
+@keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 1; } 100% { transform: scale(1.8); opacity: 0; } }
+@keyframes waveform { 0%, 100% { height: 8px; } 50% { height: 28px; } }
+.pulse-ring { animation: pulse-ring 1.2s ease-out infinite; }
+.wave-bar { animation: waveform 0.8s ease-in-out infinite; }
+.wave-bar:nth-child(2) { animation-delay: 0.1s; }
+.wave-bar:nth-child(3) { animation-delay: 0.2s; }
+.wave-bar:nth-child(4) { animation-delay: 0.3s; }
+.wave-bar:nth-child(5) { animation-delay: 0.15s; }
+</style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-slate-50 to-ice font-sans">
+
+<!-- Header -->
+<header class="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
+<div class="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
+<a href="/" class="flex items-center gap-2">
+<img alt="Buzz Voice" class="w-8 h-8 object-contain" src="https://d2xsxph8kpxj0f.cloudfront.net/310519663042633177/JLfMoCY9kP2qtnZEqdKw7Z/mascot-line-art-v5-WAaqzY58AFDmkeyWJBVJ2k.png">
+<span class="font-display text-xl font-bold text-slate-dark">Buzz Voice</span>
+</a>
+<div class="flex items-center gap-4">
+<div id="usage-badge" class="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-honey-light rounded-full text-sm font-medium text-honey-dark">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+<span id="usage-text">60:00 残り</span>
+</div>
+<div id="user-info" class="flex items-center gap-2">
+<span id="user-name" class="text-sm font-medium text-slate-dark hidden sm:block"></span>
+<div id="user-avatar" class="w-8 h-8 rounded-full bg-honey flex items-center justify-center text-white font-bold text-sm"></div>
+</div>
+</div>
+</div>
+</header>
+
+<!-- Main -->
+<main class="max-w-3xl mx-auto px-4 py-8">
+
+<!-- Status Card -->
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+<div class="flex items-center justify-between mb-4">
+<h2 class="font-display text-lg font-bold text-slate-dark">音声入力</h2>
+<div class="flex items-center gap-2">
+<select id="lang-select" class="text-sm border border-gray-200 rounded-lg px-3 py-1.5 text-slate-dark bg-white outline-none focus:border-honey">
+<option value="ja-JP">日本語</option>
+<option value="en-US">English</option>
+<option value="zh-CN">中文</option>
+<option value="ko-KR">한국어</option>
+</select>
+</div>
+</div>
+
+<!-- Mic Button -->
+<div class="flex flex-col items-center py-8">
+<div class="relative mb-6">
+<div id="pulse" class="absolute inset-0 rounded-full bg-honey/30 hidden pulse-ring"></div>
+<button id="mic-btn" onclick="toggleRecording()" class="relative w-24 h-24 rounded-full bg-gradient-to-br from-honey to-amber-500 hover:from-amber-500 hover:to-honey text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center cursor-pointer active:scale-95">
+<svg id="mic-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+<svg id="stop-icon" class="hidden" width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+</button>
+</div>
+
+<!-- Waveform -->
+<div id="waveform" class="hidden flex items-center gap-1 mb-4">
+<div class="wave-bar w-1 bg-honey rounded-full"></div>
+<div class="wave-bar w-1 bg-amber-400 rounded-full"></div>
+<div class="wave-bar w-1 bg-honey rounded-full"></div>
+<div class="wave-bar w-1 bg-amber-400 rounded-full"></div>
+<div class="wave-bar w-1 bg-honey rounded-full"></div>
+</div>
+
+<p id="mic-status" class="text-sm text-slate-medium">マイクボタンを押して音声入力を開始</p>
+<p id="rec-timer" class="text-2xl font-display font-bold text-slate-dark mt-2 hidden">00:00</p>
+</div>
+</div>
+
+<!-- Text Output -->
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
+<div class="flex items-center justify-between mb-3">
+<h2 class="font-display text-lg font-bold text-slate-dark">テキスト出力</h2>
+<div class="flex gap-2">
+<button onclick="copyText()" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 text-slate-medium hover:text-slate-dark transition-colors cursor-pointer">コピー</button>
+<button onclick="clearText()" class="text-sm px-3 py-1.5 border border-gray-200 rounded-lg hover:bg-gray-50 text-slate-medium hover:text-slate-dark transition-colors cursor-pointer">クリア</button>
+</div>
+</div>
+<div id="output" contenteditable="true" class="min-h-[200px] p-4 rounded-xl bg-gray-50 border border-gray-200 text-base text-slate-dark leading-relaxed outline-none focus:border-honey focus:ring-2 focus:ring-honey/20 transition-all" placeholder="ここにテキストが表示されます..."></div>
+<div class="flex items-center justify-between mt-3 text-xs text-slate-medium">
+<span id="char-count">0 文字</span>
+<span id="interim-text" class="text-honey-dark italic"></span>
+</div>
+</div>
+
+<!-- Usage Stats -->
+<div class="grid grid-cols-3 gap-4 mb-6">
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-center">
+<p class="text-2xl font-display font-bold text-slate-dark" id="stat-used">0:00</p>
+<p class="text-xs text-slate-medium mt-1">今月の使用時間</p>
+</div>
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-center">
+<p class="text-2xl font-display font-bold text-honey-dark" id="stat-remaining">60:00</p>
+<p class="text-xs text-slate-medium mt-1">残り時間</p>
+</div>
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4 text-center">
+<p class="text-2xl font-display font-bold text-slate-dark" id="stat-chars">0</p>
+<p class="text-xs text-slate-medium mt-1">文字数合計</p>
+</div>
+</div>
+
+<!-- Usage Bar -->
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-medium text-slate-dark">今月の利用状況</span>
+<span class="text-sm text-slate-medium" id="usage-percent">0%</span>
+</div>
+<div class="w-full h-3 bg-gray-100 rounded-full overflow-hidden">
+<div id="usage-bar" class="h-full bg-gradient-to-r from-honey to-amber-500 rounded-full transition-all duration-500" style="width: 0%"></div>
+</div>
+<p class="text-xs text-slate-medium mt-2">無料プラン: 月60分 ・ <a href="/#pricing" class="text-honey-dark hover:underline">Proプランにアップグレード</a>で無制限</p>
+</div>
+</main>
+
+<!-- Limit Modal -->
+<div id="limit-modal" style="display:none" class="fixed inset-0 z-[100] bg-black/50 flex items-center justify-center p-4">
+<div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center">
+<div class="text-4xl mb-4">&#x23F0;</div>
+<h3 class="font-display text-2xl font-bold text-slate-dark mb-2">今月の無料枠を使い切りました</h3>
+<p class="text-slate-medium mb-6">Proプラン（月額¥1,500）にアップグレードすると、<br>無制限で音声入力をご利用いただけます。</p>
+<a href="https://buy.stripe.com/cNibJ19qWg7a2ac340abK00" target="_blank" class="inline-block w-full h-12 leading-[48px] bg-honey hover:bg-honey-dark text-slate-dark hover:text-white font-bold rounded-xl transition-all duration-200 shadow-md hover:shadow-lg">Proにアップグレード</a>
+<button onclick="document.getElementById('limit-modal').style.display='none'" class="mt-3 text-sm text-slate-medium hover:text-slate-dark cursor-pointer">閉じる</button>
+</div>
+</div>
+
+<script>
+// State
+var recognition = null;
+var isRecording = false;
+var totalSecondsUsed = 0;
+var maxSeconds = 3600; // 60 minutes
+var sessionSeconds = 0;
+var timerInterval = null;
+var totalChars = 0;
+
+// Load saved usage from this month
+var storageKey = 'buzzvoice_usage_' + new Date().getFullYear() + '_' + (new Date().getMonth() + 1);
+var saved = localStorage.getItem(storageKey);
+if (saved) {
+  var data = JSON.parse(saved);
+  totalSecondsUsed = data.seconds || 0;
+  totalChars = data.chars || 0;
+}
+
+// User display
+var params = new URLSearchParams(window.location.search);
+var userName = params.get('name') || 'ゲスト';
+document.getElementById('user-name').textContent = userName;
+document.getElementById('user-avatar').textContent = userName.charAt(0).toUpperCase();
+
+updateStats();
+
+// Check browser support
+if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+  document.getElementById('mic-status').textContent = 'このブラウザは音声入力に対応していません（Chromeをお使いください）';
+  document.getElementById('mic-btn').disabled = true;
+  document.getElementById('mic-btn').classList.add('opacity-50');
+}
+
+function toggleRecording() {
+  if (isRecording) {
+    stopRecording();
+  } else {
+    startRecording();
+  }
+}
+
+function startRecording() {
+  // Check limit
+  if (totalSecondsUsed >= maxSeconds) {
+    document.getElementById('limit-modal').style.display = 'flex';
+    return;
+  }
+
+  var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SpeechRecognition();
+  recognition.lang = document.getElementById('lang-select').value;
+  recognition.continuous = true;
+  recognition.interimResults = true;
+
+  recognition.onstart = function() {
+    isRecording = true;
+    sessionSeconds = 0;
+    document.getElementById('mic-icon').classList.add('hidden');
+    document.getElementById('stop-icon').classList.remove('hidden');
+    document.getElementById('pulse').classList.remove('hidden');
+    document.getElementById('waveform').classList.remove('hidden');
+    document.getElementById('mic-status').textContent = '録音中...クリックで停止';
+    document.getElementById('rec-timer').classList.remove('hidden');
+    document.getElementById('mic-btn').classList.remove('from-honey', 'to-amber-500');
+    document.getElementById('mic-btn').classList.add('from-red-500', 'to-red-600');
+    timerInterval = setInterval(updateTimer, 1000);
+  };
+
+  recognition.onresult = function(event) {
+    var finalText = '';
+    var interimText = '';
+    for (var i = event.resultIndex; i < event.results.length; i++) {
+      if (event.results[i].isFinal) {
+        finalText += event.results[i][0].transcript;
+      } else {
+        interimText += event.results[i][0].transcript;
+      }
+    }
+    if (finalText) {
+      var output = document.getElementById('output');
+      output.textContent += finalText;
+      totalChars += finalText.length;
+      document.getElementById('char-count').textContent = output.textContent.length + ' 文字';
+    }
+    document.getElementById('interim-text').textContent = interimText;
+  };
+
+  recognition.onerror = function(event) {
+    if (event.error === 'not-allowed') {
+      document.getElementById('mic-status').textContent = 'マイクへのアクセスが許可されていません。ブラウザの設定を確認してください。';
+    }
+    stopRecording();
+  };
+
+  recognition.onend = function() {
+    if (isRecording) {
+      // Auto restart if still recording
+      try { recognition.start(); } catch(e) { stopRecording(); }
+    }
+  };
+
+  try {
+    recognition.start();
+  } catch(e) {
+    document.getElementById('mic-status').textContent = 'マイクの起動に失敗しました';
+  }
+}
+
+function stopRecording() {
+  isRecording = false;
+  if (recognition) {
+    recognition.onend = null;
+    recognition.stop();
+  }
+  clearInterval(timerInterval);
+  document.getElementById('mic-icon').classList.remove('hidden');
+  document.getElementById('stop-icon').classList.add('hidden');
+  document.getElementById('pulse').classList.add('hidden');
+  document.getElementById('waveform').classList.add('hidden');
+  document.getElementById('mic-status').textContent = 'マイクボタンを押して音声入力を開始';
+  document.getElementById('rec-timer').classList.add('hidden');
+  document.getElementById('mic-btn').classList.add('from-honey', 'to-amber-500');
+  document.getElementById('mic-btn').classList.remove('from-red-500', 'to-red-600');
+  document.getElementById('interim-text').textContent = '';
+
+  // Save usage
+  totalSecondsUsed += sessionSeconds;
+  saveUsage();
+  updateStats();
+}
+
+function updateTimer() {
+  sessionSeconds++;
+  var total = totalSecondsUsed + sessionSeconds;
+  var min = Math.floor(sessionSeconds / 60);
+  var sec = sessionSeconds % 60;
+  document.getElementById('rec-timer').textContent = String(min).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+
+  // Check limit
+  if (total >= maxSeconds) {
+    stopRecording();
+    document.getElementById('limit-modal').style.display = 'flex';
+  }
+}
+
+function updateStats() {
+  var usedMin = Math.floor(totalSecondsUsed / 60);
+  var usedSec = totalSecondsUsed % 60;
+  var remainSec = Math.max(0, maxSeconds - totalSecondsUsed);
+  var remainMin = Math.floor(remainSec / 60);
+  var remainS = remainSec % 60;
+  var pct = Math.min(100, Math.round((totalSecondsUsed / maxSeconds) * 100));
+
+  document.getElementById('stat-used').textContent = usedMin + ':' + String(usedSec).padStart(2, '0');
+  document.getElementById('stat-remaining').textContent = remainMin + ':' + String(remainS).padStart(2, '0');
+  document.getElementById('stat-chars').textContent = totalChars.toLocaleString();
+  document.getElementById('usage-text').textContent = remainMin + ':' + String(remainS).padStart(2, '0') + ' 残り';
+  document.getElementById('usage-percent').textContent = pct + '%';
+  document.getElementById('usage-bar').style.width = pct + '%';
+
+  if (pct > 80) {
+    document.getElementById('usage-bar').classList.remove('from-honey', 'to-amber-500');
+    document.getElementById('usage-bar').classList.add('from-red-400', 'to-red-500');
+  }
+}
+
+function saveUsage() {
+  localStorage.setItem(storageKey, JSON.stringify({ seconds: totalSecondsUsed, chars: totalChars }));
+}
+
+function copyText() {
+  var text = document.getElementById('output').textContent;
+  if (text) {
+    navigator.clipboard.writeText(text).then(function() {
+      var btn = event.target;
+      btn.textContent = 'コピーしました!';
+      setTimeout(function() { btn.textContent = 'コピー'; }, 2000);
+    });
+  }
+}
+
+function clearText() {
+  document.getElementById('output').textContent = '';
+  document.getElementById('char-count').textContent = '0 文字';
+}
+</script>
+</body>
+</html>
